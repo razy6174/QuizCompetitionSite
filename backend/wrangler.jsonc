@@ -13,6 +13,13 @@
 	"upload_source_maps": true,
 	"compatibility_flags": [
 		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "quiz-db",
+			"database_id": "ab5dc867-fe02-48d9-b3ed-cf21c10fd315"
+		}
 	]
 	/**
 	 * Smart Placement
