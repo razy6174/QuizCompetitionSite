@@ -1,7 +1,7 @@
 // frontend/src/js/pages/course.js
 
 console.log('★ course.js がブラウザに読み込まれました！');
-import { loginAndGetUserInfo } from '../../api.js';
+import { loginAndGetUserInfo } from '../api.js';
 
 async function init() {
   console.log('ページが読み込まれました。ログイン情報を確認します...');
