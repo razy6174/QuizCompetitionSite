@@ -1,11 +1,11 @@
 // backend/src/handlers/user.js
 
 export async function handleUserAuth(request, env) {
-  // ① Zero Trustのヘッダーからメールアドレスを取得
-  const email = request.headers.get('Cf-Access-Authenticated-User-Email');
+  const url = new URL(request.url);
+  const Email = url.searchParams.get('email');
 
   // ローカル開発用のフォールバック（手元でテストする用）
-  const userEmail = email || 'test@example.com'; 
+  const userEmail = Email || 'test@example.com'; 
 
   if (!userEmail) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
