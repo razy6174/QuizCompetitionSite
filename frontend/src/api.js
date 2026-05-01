@@ -2,7 +2,7 @@
 
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8787'
-  : 'https://quizcompetitionsite.pages.dev/';// バックエンドのURL';
+  : 'https://quizcompetitionsiteworkers.k-kazuyastrk.workers.dev';// バックエンドのURL';
 
 // export をつけることで、他のファイル（course.jsなど）から呼び出せるようになります！
 export async function loginAndGetUserInfo() {
