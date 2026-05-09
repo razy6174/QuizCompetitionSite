@@ -2,7 +2,23 @@
 import { loginAndGetUserInfo } from '../api.js'; // パスはフォルダ構成に合わせて調整してください
 
 let currentUserId = null;
+let currentSessionId = null;
 
+// 👇 これを復活させます！
+async function init() {
+  console.log('ユーザー情報を取得しています...');
+  const result = await loginAndGetUserInfo();
+
+  if (result && result.success) {
+    // 無事に思い出した！箱にIDを入れる！
+    currentUserId = result.user.id; 
+    console.log('✅ ガチコース準備完了：ユーザーID', currentUserId);
+  } else {
+    // 本当にログイン情報がない場合だけ弾く
+    alert('ログイン情報がありません。ログイン画面に戻ります。');
+    window.location.href = 'index.html'; 
+  }
+}
 
 // ② ガチコースのスタートボタンが押された時の処理
 document.getElementById('start-btn').addEventListener('click', async () => {
@@ -25,8 +41,8 @@ document.getElementById('start-btn').addEventListener('click', async () => {
       console.log('✅ ガチコース開始！時刻:', data.session.start_time);
       
       // 画面を一瞬で切り替える
-      document.getElementById('start-screen').style.display = 'none';
-      document.getElementById('quiz-screen').style.display = 'block';
+      //document.getElementById('start-screen').style.display = 'none';
+      //document.getElementById('quiz-screen').style.display = 'block';
     } else {
       alert('エラーが発生しました。');
     }
