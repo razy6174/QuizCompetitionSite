@@ -23,6 +23,10 @@ export async function handleStartSession(request, env) {
     });
   } catch (error) {
     console.error('セッション開始エラー:', error);
-    return new Response(JSON.stringify({ error: 'Failed to start session' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Failed to start session', details: error.message }), 
+    { status: 500, headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*' // 👈 これがないとブラウザがパニックになる！
+      }});
   }
 }
