@@ -1,5 +1,5 @@
 // frontend/src/pages/gachi.js
-import { loginAndGetUserInfo } from '../api.js'; // パスはフォルダ構成に合わせて調整してください
+import { loginAndGetUserInfo, API_BASE_URL} from '../api.js'; // パスはフォルダ構成に合わせて調整してください
 
 let currentUserId = null;
 let currentSessionId = null;
@@ -29,7 +29,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 
   try {
     // ローカルのバックエンドのAPIを叩く
-    const response = await fetch('https://quizcompetitionsiteworkers.k-kazuyastrk.workers.dev/api/start-session', {
+    const response = await fetch(`${API_BASE_URL}/api/start-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: currentUserId })
