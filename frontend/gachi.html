@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ガチコース</title>
+</head>
+<body>
+  <div id="start-screen">
+    <h1>🔥 ガチコースへようこそ！</h1>
+    <p>準備ができたらスタートを押してください。</p>
+    <button id="start-btn">クイズスタート！</button>
+  </div>
+
+  <div id="quiz-screen" style="display: none;">
+    <h2 id="question-text">読み込み中...</h2>
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
+  </div>
+  
+  <div id="quiz-screen" style="display: none;">
+    <h2>Q1. ガチの問題...</h2>
+    <button class="choice-btn">選択肢A</button>
+    <button class="choice-btn">選択肢B</button>
+  </div>
+
+  <script type="module" src="./src/pages/gachi.js"></script>
+</body>
+</html>
