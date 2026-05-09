@@ -10,6 +10,7 @@ export default defineConfig({
         // ここに本番環境でも使いたいHTMLファイルをすべて登録します
         main: resolve(__dirname, 'index.html'),
         course: resolve(__dirname, 'course.html'),
+        gachi: resolve(__dirname, 'gachi.html'),
         
         // ※今後以下のページを作ったら、ここに追加していけばOKです！
         // quiz: resolve(__dirname, 'quiz.html'),
