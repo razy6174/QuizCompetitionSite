@@ -1,21 +1,21 @@
-// frontend/src/js/pages/course.js
-
-console.log('★ course.js がブラウザに読み込まれました！');
 import { loginAndGetUserInfo } from '../api.js';
 
-async function init() {
-  console.log('ページが読み込まれました。ログイン情報を確認します...');
+// 今回クイズをする人のIDを保存しておくための「空の箱」を用意
+let currentUserId = null;
 
-  // ここでバックエンドに話しかける！
+// ① ページが開かれたら最初に実行される処理
+async function init() {
+  // バックエンドに話しかけてユーザー情報を取得（ここは本番でも必須！）
   const result = await loginAndGetUserInfo();
 
   if (result && result.success) {
-    console.log('✅ ログイン成功！ユーザー情報:', result.user);
-    // ここで「こんにちは、test@example.comさん！」といった表示を出すことも可能
+    // 成功したら、後で使えるようにIDを箱に保存しておく！
+    currentUserId = result.user.id; 
+    console.log('準備完了：ユーザーID', currentUserId);
   } else {
-    console.log('❌ ログインに失敗したか、ユーザー情報が取得できませんでした。');
+    alert('ユーザー情報の取得に失敗しました。画面を再読み込みしてください。');
   }
 }
 
-// ページ読み込み完了時に実行
+// ページ読み込み完了時に init を実行
 document.addEventListener('DOMContentLoaded', init);

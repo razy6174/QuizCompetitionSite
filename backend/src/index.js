@@ -16,6 +16,7 @@
 
 // backend/src/index.js
 import { handleUserAuth } from './handlers/user.js';
+import { handleStartSession } from './handlers/session.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -27,7 +28,10 @@ export default {
     }
 
     // 他のURLの処理... (quiz.js などへ)
-    
+    if (url.pathname === '/api/start-session' && request.method === 'POST') {
+      return handleStartSession(request, env);
+    }
+
     // 該当するAPIがない場合
     return new Response('Not Found', { status: 404 });
   }
