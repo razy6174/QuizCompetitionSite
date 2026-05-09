@@ -8,12 +8,12 @@ export async function handleStartSession(request, env) {
 
   try {
     // フロントエンドから送られてきたユーザーIDを受け取る
-    const { userId } = await request.json();
+    const { userId, start_time } = await request.json();
 
     // データベースに記録し、同時に作られた session_id と start_time を返してもらう（RETURNING）
     const { results } = await env.DB.prepare(
-      'INSERT INTO play_sessions (user_id) VALUES (?) RETURNING id, start_time'
-    ).bind(userId).all();
+      'INSERT INTO play_sessions (user_id, start_time) VALUES (?, ?) RETURNING id, start_time'
+    ).bind(userId, start_time).all();
 
     const newSession = results[0];
 

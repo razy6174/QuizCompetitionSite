@@ -27,12 +27,14 @@ document.getElementById('start-btn').addEventListener('click', async () => {
     return;
   }
 
+  const clickTime = new Date().toISOString();
+
   try {
     // ローカルのバックエンドのAPIを叩く
     const response = await fetch(`${API_BASE_URL}/api/start-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: currentUserId })
+      body: JSON.stringify({ userId: currentUserId, start_time: clickTime }) // ユーザーIDとクリックした時刻を送る
     });
 
     const data = await response.json();
