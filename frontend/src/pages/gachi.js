@@ -63,12 +63,12 @@ document.getElementById('start-btn').addEventListener('click', async () => {
       console.log('✅ ガチコース開始！時刻:', data.session.start_time);
       
       // 画面を一瞬で切り替える
-      //document.getElementById('start-screen').style.display = 'none';
-      //document.getElementById('quiz-screen').style.display = 'block';
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('quiz-screen').style.display = 'block';
     } else {
       alert('エラーが発生しました。');
     }
-  } catch (error) {
+  } catch (error) { 
     console.error('通信エラー:', error);
   }
 });
