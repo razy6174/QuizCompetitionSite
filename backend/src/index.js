@@ -17,6 +17,7 @@
 // backend/src/index.js
 import { handleUserAuth } from './handlers/user.js';
 import { handleStartSession } from './handlers/session.js';
+import { handleGetQuestions } from './handlers/quiz.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -40,6 +41,10 @@ export default {
     // 他のURLの処理... (quiz.js などへ)
     if (url.pathname === '/api/start-session' && request.method === 'POST') {
       return handleStartSession(request, env);
+    }
+
+    if (url.pathname === '/api/questions' && request.method === 'GET') {
+      return await handleGetQuestions(request, env);
     }
 
     // 該当するAPIがない場合
