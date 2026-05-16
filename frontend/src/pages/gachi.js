@@ -44,7 +44,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
       
       // 画面を一瞬で切り替える
       document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'block';
+      document.getElementById('quiz-screen').style.display = 'block';
 
     // 💡 ここで displayQuestion(0) などを呼び出して、第1問を表示させる！
     
