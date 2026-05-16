@@ -1,26 +1,21 @@
 // frontend/src/pages/gachi.js
-import { loginAndGetUserInfo, API_BASE_URL} from '../api.js'; // パスはフォルダ構成に合わせて調整してください
+import { getCurrentUserId, startQuizSession } from '../api.js';
 
 let currentUserId = null;
-let currentSessionId = null;
 
-// 👇 これを復活させます！
 async function init() {
   console.log('ユーザー情報を取得しています...');
-  const result = await loginAndGetUserInfo();
+  currentUserId = await getCurrentUserId();
 
-  if (result && result.success) {
-    // 無事に思い出した！箱にIDを入れる！
-    currentUserId = result.user.id; 
+  if (currentUserId) {
     console.log('✅ ガチコース準備完了：ユーザーID', currentUserId);
-  } else {
-    // 本当にログイン情報がない場合だけ弾く
-    alert('ログイン情報がありません。ログイン画面に戻ります。');
-    window.location.href = 'index.html'; 
+    return;
   }
+
+  alert('ユーザー情報がありません。ログイン画面に戻ります。');
+  window.location.href = 'index.html';
 }
 
-// frontend/src/pages/gachi.js のイメージ
 let quizData = []; // ここに15問のデータが入る
 
 // 🌟 完成版の表示関数！
@@ -42,34 +37,19 @@ function displayQuestion(index) {
 
 // ② ガチコースのスタートボタンが押された時の処理
 document.getElementById('start-btn').addEventListener('click', async () => {
-  if (!currentUserId) {
-    alert('ユーザー情報を読み込み中です...');
-    return;
-  }
+  const result = await startQuizSession(currentUserId);
 
-  const clickTime = new Date().toISOString();
-
-  try {
-    // ローカルのバックエンドのAPIを叩く
-    const response = await fetch(`${API_BASE_URL}/api/start-session`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: currentUserId, start_time: clickTime }) // ユーザーIDとクリックした時刻を送る
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      console.log('✅ ガチコース開始！時刻:', data.session.start_time);
+    if (result && result.success) {
+      console.log('✅ ガチコース開始！サーバー側で時間記録完了');
       
       // 画面を一瞬で切り替える
       document.getElementById('start-screen').style.display = 'none';
-      document.getElementById('quiz-screen').style.display = 'block';
-    } else {
-      alert('エラーが発生しました。');
-    }
-  } catch (error) { 
-    console.error('通信エラー:', error);
+    document.getElementById('quiz-screen').style.display = 'block';
+
+    // 💡 ここで displayQuestion(0) などを呼び出して、第1問を表示させる！
+    
+  } else {
+    alert('エラーが発生しました。もう一度お試しください。');
   }
 });
 
