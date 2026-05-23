@@ -1,7 +1,6 @@
 // backend/src/index.js
 import { handleUserAuth } from './handlers/user.js';
 import { handleStartSession } from './handlers/session.js';
-import { handleGetQuestions } from './handlers/quiz.js';
 
 export default {
   async fetch(request, env, ctx) {
