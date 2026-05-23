@@ -1,5 +1,5 @@
 // frontend/src/pages/gachi.js
-import { getCurrentUserId, startQuizSession, fetchQuizQuestions} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions} from '../api.js';
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
