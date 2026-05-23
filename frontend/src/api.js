@@ -50,18 +50,16 @@ export async function getCurrentUserId() {
   return data?.success ? data.user.id : null;
 }
 
-// クイズ開始をバックエンドに伝える関数
-export async function startQuizSession(userId) {
+// 🌟 統合版：クイズ開始＆問題取得API
+export async function startQuizAndGetQuestions(userId, course) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/start-session`, {
+    const response = await fetch(`${API_BASE_URL}/api/start-quiz/${course}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // ⚠️ チート対策：時刻は送らない！誰が始めたか（userId）だけ送る！
       body: JSON.stringify({ userId: userId })
     });
-
-    const data = await response.json();
-    return data;
+    
+    return await response.json();
   } catch (error) {
     console.error('クイズ開始APIエラー:', error);
     return { success: false, error: '通信エラーが発生しました' };

@@ -1,7 +1,6 @@
 // backend/src/index.js
 import { handleUserAuth } from './handlers/user.js';
-import { handleStartSession } from './handlers/session.js';
-import { handleGetQuestions } from './handlers/quiz.js';
+import { handleStartQuizAndGetQuestions } from './handlers/session.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -22,13 +21,13 @@ export default {
       return handleUserAuth(request, env);
     }
 
-    // 他のURLの処理... (quiz.js などへ)
-    if (url.pathname === '/api/start-session' && request.method === 'POST') {
-      return handleStartSession(request, env);
+    // 🌟 統合APIへの案内（ガチとエンジョイ）
+    if (url.pathname === '/api/start-quiz/gachi' && request.method === 'POST') {
+      return handleStartQuizAndGetQuestions(request, env, 'gachi');
     }
 
-    if (url.pathname === '/api/questions' && request.method === 'GET') {
-      return await handleGetQuestions(request, env);
+    if (url.pathname === '/api/start-quiz/enjoy' && request.method === 'POST') {
+      return handleStartQuizAndGetQuestions(request, env, 'enjoy');
     }
 
     // 該当するAPIがない場合
