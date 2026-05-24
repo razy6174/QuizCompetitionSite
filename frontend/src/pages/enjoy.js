@@ -64,11 +64,20 @@ function displayQuestion(index) {
 // 👆 4. 選択肢ボタンが押された時の処理
 // ==========================================
 const choiceButtons = document.querySelectorAll('.choice-btn');
+const choiceMap = ['A', 'B', 'C', 'D'];
 choiceButtons.forEach((button, buttonIndex) => {
   // 4つのボタンそれぞれに「クリックされたら」の処理をセット
   button.addEventListener('click', () => {
-    
-    // 💡 ① ここで正誤判定をして、正解なら currentScore を増やす処理が入ります！
+    const currentQuestion = quizData[currentQuestionIndex];
+    const selectedChoice = choiceMap[buttonIndex];
+
+    // 💡 ① フロントエンドで正誤判定を行い、スコアを更新する
+    if (currentQuestion.correct_choice === selectedChoice) {
+      currentScore++;
+      console.log('⭕️ 正解！ 現在のスコア:', currentScore);
+    } else {
+      console.log(`❌ 不正解... 正解は ${currentQuestion.correct_choice} でした`);
+    }
 
     // ② 次の問題へ進む準備
     currentQuestionIndex++; // インデックスを1増やす
