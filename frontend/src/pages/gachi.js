@@ -1,5 +1,5 @@
 // frontend/src/pages/gachi.js
-import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer, finishQuizSession} from '../api.js';
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
@@ -115,12 +115,24 @@ choiceButtons.forEach((button, buttonIndex) => {
 async function finishGame() {
   console.log(`✅ 15問終了！ スコア: ${currentScore} / 15`);
   
-  // 💡 ここで「終了時間を記録するAPI」を呼び出します（後で作る）
-  // await finishQuizSession(currentUserId, currentSessionId, currentScore, 'gachi');
+// ① 終了APIを叩く（スコア計算はサーバーにお任せ！）
+  const result = await finishQuizSession(currentSessionId);
 
-  // 結果画面へ切り替える
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
+if (result && result.success) {
+    // ② サーバーが計算した「正式なスコア」を結果画面に流し込む
+    // ※ HTML側に <span id="final-score-display">0</span> がある前提です
+    const scoreElement = document.getElementById('final-score-display');
+    if (scoreElement) {
+      scoreElement.textContent = result.finalScore;
+    }
+
+    // ③ 画面をパッと切り替える！
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+  } else {
+    alert('結果の保存に失敗しました。');
+  }
 }
 
 // ページ読み込み完了時に init を実行
