@@ -1,6 +1,7 @@
 // backend/src/index.js
 import { handleUserAuth } from './handlers/user.js';
 import { handleStartQuizAndGetQuestions } from './handlers/session.js';
+import { handleSubmitAnswer } from './handlers/answer.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -28,6 +29,11 @@ export default {
 
     if (url.pathname === '/api/start-quiz/enjoy' && request.method === 'POST') {
       return handleStartQuizAndGetQuestions(request, env, 'enjoy');
+    }
+
+    // 🌟 解答を送信するAPI
+    if (url.pathname === '/api/submit-answer' && request.method === 'POST') {
+      return handleSubmitAnswer(request, env);
     }
 
     // 該当するAPIがない場合
