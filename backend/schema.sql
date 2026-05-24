@@ -3,6 +3,7 @@
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS play_sessions;
 DROP TABLE IF EXISTS gachi_sessions;
+DROP TABLE IF EXISTS enjoy_sessions;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS users;
 
@@ -20,6 +21,13 @@ CREATE TABLE gachi_sessions (
     user_id INTEGER UNIQUE NOT NULL,             -- 誰がプレイしたか（usersのidと紐づく）
     start_time TEXT,         -- クイズを開始した時刻
     end_time DATETIME,                    -- クイズを終了した時刻
+    score INTEGER DEFAULT 0,              -- スコア（初期値は0）
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE enjoy_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, -- プレイごとの通し番号
+    user_id INTEGER NOT NULL,             -- 誰がプレイしたか（usersのidと紐づく）
     score INTEGER DEFAULT 0,              -- スコア（初期値は0）
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -48,3 +56,4 @@ CREATE TABLE answers (
     FOREIGN KEY (gachi_session_id) REFERENCES gachi_sessions(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
 );
+

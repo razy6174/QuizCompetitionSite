@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>エンジョイコース</title>
+</head>
+<body>
+  
+  <div id="start-screen">
+    <h1>🔥 エンジョイコースへようこそ！</h1>
+    <p>準備ができたらスタートを押してください。</p>
+    <button id="start-btn">クイズスタート！</button>
+  </div>
+
+  <div id="quiz-screen" style="display: none;">
+    <h3 id="question-number">第1問</h3>
+    
+    <h2 id="question-text">読み込み中...</h2>
+    
+    <div id="choices-container">
+      <button class="choice-btn"></button>
+      <button class="choice-btn"></button>
+      <button class="choice-btn"></button>
+      <button class="choice-btn"></button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/pages/enjoy.js"></script>
+</body>
+</html>
