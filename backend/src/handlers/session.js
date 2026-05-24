@@ -65,35 +65,55 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
 
 
     // ③ 整理券と問題データを1つのダンボール箱に詰めて、フロントエンドに送り返す！
-
-    return new Response(JSON.stringify({
-
-      success: true,
-
-      sessionId: newSessionId,
-
-      questions: quizResults
-
+    return new Response(JSON.stringify({ 
+      success: true, 
+      sessionId: newSessionId, 
+      questions: quizResults 
     }), {
-
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-
     });
-
-
 
   } catch (error) {
-
     console.error('クイズ開始＆取得エラー:', error);
-
     return new Response(JSON.stringify({ success: false, error: '通信エラー' }), {
-
       status: 500,
-
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+  }
+}
 
+export async function handleFinishQuiz(request, env) {
+  if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
+
+  try {
+    const { sessionId } = await request.json();
+    const serverEndTime = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }).replace(/\//g, '-');
+
+    // 👑 究極のチート対策：フロントエンドの点数は信用せず、DBから「本当の正解数」を自力で数える！
+    const correctData = await env.DB.prepare(
+      'SELECT COUNT(*) as count FROM answers WHERE gachi_session_id = ? AND is_correct = 1'
+    ).bind(sessionId).first();
+
+    const finalScore = correctData.count;
+
+    // 💾 終了時間と最終スコアをガチセッションテーブルに保存（UPDATE）
+    await env.DB.prepare(
+      'UPDATE gachi_sessions SET end_time = ?, score = ? WHERE id = ?'
+    ).bind(serverEndTime, finalScore, sessionId).run();
+
+    // 📤 確定したスコアをフロントエンドに返す
+    return new Response(JSON.stringify({ 
+      success: true, 
+      finalScore: finalScore 
+    }), {
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
 
+  } catch (error) {
+    console.error('クイズ終了エラー:', error);
+    return new Response(JSON.stringify({ success: false, error: '通信エラー' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
-
 }

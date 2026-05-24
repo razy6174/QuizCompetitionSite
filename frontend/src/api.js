@@ -65,3 +65,39 @@ export async function startQuizAndGetQuestions(userId, course) {
     return { success: false, error: '通信エラーが発生しました' };
   }
 }
+
+// 解答をバックエンドに送信する関数
+export async function submitQuizAnswer(sessionId, questionId, selectedChoice) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/submit-answer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        sessionId: sessionId, 
+        questionId: questionId, 
+        selectedChoice: selectedChoice // 'A', 'B', 'C', 'D' のいずれか
+      })
+    });
+    
+    return await response.json();
+  } catch (error) {
+    console.error('解答送信エラー:', error);
+    return { success: false, error: '通信エラー' };
+  }
+}
+
+// 🌟 クイズ終了をバックエンドに伝える関数
+export async function finishQuizSession(sessionId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/finish-quiz`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: sessionId }) // 💡 スコアは送らない！IDだけ！
+    });
+    
+    return await response.json();
+  } catch (error) {
+    console.error('終了APIエラー:', error);
+    return { success: false, error: '通信エラーが発生しました' };
+  }
+}
