@@ -1,5 +1,5 @@
 // frontend/src/pages/gachi.js
-import { getCurrentUserId, startQuizAndGetQuestions} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer} from '../api.js';
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
@@ -64,23 +64,48 @@ function displayQuestion(index) {
 // 👆 4. 選択肢ボタンが押された時の処理
 // ==========================================
 const choiceButtons = document.querySelectorAll('.choice-btn');
+
+// 💡 0〜3番目のボタンを、データベース用の 'A', 'B', 'C', 'D' に変換するための辞書
+const choiceMap = ['A', 'B', 'C', 'D'];
+
 choiceButtons.forEach((button, buttonIndex) => {
   // 4つのボタンそれぞれに「クリックされたら」の処理をセット
   button.addEventListener('click', () => {
+
+    // 🛡️ フロントエンド側の連打防止策：通信が終わるまで全てのボタンを押せなくする（ロック）
+    choiceButtons.forEach(btn => btn.disabled = true);
     
-    // 💡 ① ここで正誤判定をして、正解なら currentScore を増やす処理が入ります！
+    // 今解いている問題のデータと、選んだ選択肢（'A'〜'D'）を取得
+    const currentQuestion = quizData[currentQuestionIndex];
+    const selectedChoice = choiceMap[buttonIndex];
+
+    // 📡 ① バックエンドに解答を提出し、正誤判定をしてもらう！
+    const result = await submitQuizAnswer(currentSessionId, currentQuestion.id, selectedChoice);
+
+    if (result && result.success) {
+      // ② 正解だった場合、スコアを増やす
+      if (result.isCorrect) {
+        currentScore++;
+        console.log('⭕️ 正解！ 現在のスコア:', currentScore);
+      } else {
+        console.log(`❌ 不正解... 正解は ${result.correctChoice} でした`);
+      }
+    } else {
+      alert('通信エラーが発生しました。解答が記録されていない可能性があります。');
+    }
 
     // ② 次の問題へ進む準備
     currentQuestionIndex++; // インデックスを1増やす
 
-    // ③ まだ問題が残っているかチェック
+// ④ まだ問題が残っているかチェック
     if (currentQuestionIndex < 15) {
-      // 残っていたら次の問題を表示！
-      displayQuestion(currentQuestionIndex);
+      displayQuestion(currentQuestionIndex); // 次の問題を表示
     } else {
-      // 15問終わったら終了処理へバトンタッチ！
-      finishGame();
+      finishGame(); // 15問終わったら終了処理へ
     }
+
+    // 🔓 画面が切り替わったら、ボタンのロックを解除してあげる
+    choiceButtons.forEach(btn => btn.disabled = false);
   });
 });
 
