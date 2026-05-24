@@ -70,7 +70,7 @@ const choiceMap = ['A', 'B', 'C', 'D'];
 
 choiceButtons.forEach((button, buttonIndex) => {
   // 4つのボタンそれぞれに「クリックされたら」の処理をセット
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async() => {
 
     // 🛡️ フロントエンド側の連打防止策：通信が終わるまで全てのボタンを押せなくする（ロック）
     choiceButtons.forEach(btn => btn.disabled = true);
