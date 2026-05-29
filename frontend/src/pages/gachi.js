@@ -138,12 +138,18 @@ if (result && result.success) {
 // ==========================================
 // 🚪 6. 画面遷移ボタンの処理（🌟 ここに書く！）
 // ==========================================
-const returnToCourse = () => {
+// 👻 灰色の「戻るボタン」が押された時（待たずにすぐ移動！）
+document.getElementById('back-to-course-btn').addEventListener('click', () => {
   window.location.href = 'course.html';
-};
+});
 
-document.getElementById('back-to-course-btn').addEventListener('click', returnToCourse);
-document.getElementById('survey-btn').addEventListener('click', returnToCourse);
+// 🌟 青い「アンケートボタン」が押された時（新しいタブが開くのを少し待つ！）
+document.getElementById('survey-btn').addEventListener('click', () => {
+  // ブラウザが確実に新しいタブ（Forms）を開くための猶予（500ミリ秒）を与える
+  setTimeout(() => {
+    window.location.href = 'course.html';
+  }, 500); 
+});
 
 // ページ読み込み完了時に init を実行
 document.addEventListener('DOMContentLoaded', init);
