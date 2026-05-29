@@ -75,14 +75,28 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
 
 // ↓↓↓ これを session.js の一番下に追記する ↓↓↓
 
+// backend/src/handlers/session.js の一番下
+
 export async function handleFinishQuiz(request, env, course) {
   if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
   try {
+    // フロントから sessionId と score（エンジョイ用）を受け取る
     const { sessionId, score } = await request.json();
+    
+    let finalScore = 0; // 🌟 フロントに返すためのスコア箱を用意
 
     if (course === 'gachi') {
-      // ガチコース：終了時間とスコアを両方記録する
+      // ==============================
+      // 🔥 ガチコースの処理（チート対策）
+      // ==============================
+      // 👑 フロントの点数は信用せず、DBから「本当の正解数」を自力で数える！
+      const correctData = await env.DB.prepare(
+        'SELECT COUNT(*) as count FROM answers WHERE gachi_session_id = ? AND is_correct = 1'
+      ).bind(sessionId).first();
+
+      finalScore = correctData.count; // DBで数えた正確な点数をセット！
+
       const serverEndTime = new Date().toLocaleString('ja-JP', {
         timeZone: 'Asia/Tokyo',
         year: 'numeric', month: '2-digit', day: '2-digit',
@@ -91,16 +105,26 @@ export async function handleFinishQuiz(request, env, course) {
 
       await env.DB.prepare(
         'UPDATE gachi_sessions SET end_time = ?, score = ? WHERE id = ?'
-      ).bind(serverEndTime, score, sessionId).run();
+      ).bind(serverEndTime, finalScore, sessionId).run();
 
     } else if (course === 'enjoy') {
-      // エンジョイコース：時間はいらないので、スコアだけ記録する
+      // ==============================
+      // 🌸 エンジョイコースの処理
+      // ==============================
+      // エンジョイはランキングがないので、フロントから送られてきた score をそのまま信じる！
+      finalScore = score; 
+
       await env.DB.prepare(
         'UPDATE enjoy_sessions SET score = ? WHERE id = ?'
-      ).bind(score, sessionId).run();
+      ).bind(finalScore, sessionId).run();
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    // 🌟🌟🌟 ここが修正の核心部！！ 🌟🌟🌟
+    // 確定した finalScore を、フロントエンドの result.finalScore に向けて送り返す！
+    return new Response(JSON.stringify({ 
+      success: true,
+      finalScore: finalScore 
+    }), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
 
