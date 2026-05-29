@@ -117,6 +117,7 @@ async function finishGame() {
   
 // ① 終了APIを叩く（スコア計算はサーバーにお任せ！）
   const result = await finishQuizSession(currentSessionId);
+  console.log('📦 APIからの返事:', result);
 
 if (result && result.success) {
     // ② サーバーが計算した「正式なスコア」を結果画面に流し込む
