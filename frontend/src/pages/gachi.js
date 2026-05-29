@@ -135,5 +135,15 @@ if (result && result.success) {
   }
 }
 
+// ==========================================
+// 🚪 6. 画面遷移ボタンの処理（🌟 ここに書く！）
+// ==========================================
+const returnToCourse = () => {
+  window.location.href = 'course.html';
+};
+
+document.getElementById('back-to-course-btn').addEventListener('click', returnToCourse);
+document.getElementById('survey-btn').addEventListener('click', returnToCourse);
+
 // ページ読み込み完了時に init を実行
 document.addEventListener('DOMContentLoaded', init);
