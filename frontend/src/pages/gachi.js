@@ -116,7 +116,7 @@ async function finishGame() {
   console.log(`✅ 15問終了！ スコア: ${currentScore} / 15`);
   
 // ① 終了APIを叩く（スコア計算はサーバーにお任せ！）
-  const result = await finishQuizSession(currentSessionId);
+  const result = await finishQuizSession(currentSessionId, 'gachi');
   console.log('📦 APIからの返事:', result);
 
 if (result && result.success) {

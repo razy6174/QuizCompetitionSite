@@ -38,8 +38,12 @@ export default {
     }
 
     // 🌟 2. 終了APIのルーティングを追加
-    if (url.pathname === '/api/finish-quiz' && request.method === 'POST') {
-      return handleFinishQuiz(request, env);
+    if (url.pathname === '/api/finish-quiz/gachi' && request.method === 'POST') {
+      return handleFinishQuiz(request, env, 'gachi');
+    }
+
+    if (url.pathname === '/api/finish-quiz/enjoy' && request.method === 'POST') {
+      return handleFinishQuiz(request, env, 'enjoy');
     }
 
     // 該当するAPIがない場合

@@ -87,9 +87,9 @@ export async function submitQuizAnswer(sessionId, questionId, selectedChoice) {
 }
 
 // 🌟 クイズ終了をバックエンドに伝える関数
-export async function finishQuizSession(sessionId) {
+export async function finishQuizSession(sessionId, course) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/finish-quiz`, {
+    const response = await fetch(`${API_BASE_URL}/api/finish-quiz/${course}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId: sessionId }) // 💡 スコアは送らない！IDだけ！
