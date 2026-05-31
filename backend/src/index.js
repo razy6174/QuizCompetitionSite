@@ -1,5 +1,5 @@
 // backend/src/index.js
-import { handleUserAuth } from './handlers/user.js';
+import { handleUserAuth, handleUpdateName} from './handlers/user.js';
 import { handleStartQuizAndGetQuestions, handleFinishQuiz} from './handlers/session.js';
 import { handleSubmitAnswer } from './handlers/answer.js';
 
@@ -21,6 +21,11 @@ export default {
     // リクエストされたURLが「/api/auth」だった場合、user.jsの処理を呼び出す
     if (url.pathname === '/api/auth' && request.method === 'GET') {
       return handleUserAuth(request, env);
+    }
+
+    // 🌟 名前更新APIのルートを追加
+    if (url.pathname === '/api/update-name' && request.method === 'POST') {
+      return handleUpdateName(request, env);
     }
 
     // 🌟 統合APIへの案内（ガチとエンジョイ）

@@ -32,13 +32,40 @@ export async function handleUserAuth(request, env) {
       console.log('既存ユーザーがログインしました:', userEmail);
     }
 
-    // ④ フロントエンドに結果を返す
-    return new Response(JSON.stringify({ success: true, user: user }), {
+// 🌟 追加：名前が未登録（nullや空文字）かどうかを判定
+    const requiresName = !user.name;
+
+    return new Response(JSON.stringify({ 
+      success: true, 
+      user: user, 
+      requiresName: requiresName // 👈 フロントエンドに教える！
+    }), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
 
   } catch (error) {
     console.error('Database error:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+  }
+}
+
+// 🌟 新規追加：名前をアップデートするAPI
+export async function handleUpdateName(request, env) {
+  if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
+
+  try {
+    const { userId, name } = await request.json();
+
+    await env.DB.prepare(
+      'UPDATE users SET name = ? WHERE id = ?'
+    ).bind(name, userId).run();
+
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+
+  } catch (error) {
+    console.error('名前更新エラー:', error);
+    return new Response(JSON.stringify({ success: false, error: 'サーバーエラー' }), { status: 500, headers: { 'Access-Control-Allow-Origin': '*' }});
   }
 }

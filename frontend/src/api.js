@@ -50,6 +50,34 @@ export async function getCurrentUserId() {
   return data?.success ? data.user.id : null;
 }
 
+// 🌟 名前を登録・更新する関数
+export async function updateUserName(userId, name) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/update-name`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: userId, name: name })
+    });
+    
+    const data = await response.json();
+
+    if (data.success) {
+      // 💡 成功したら、ローカルのキャッシュ情報も書き換える！
+      const cached = getCachedUserInfo();
+      if (cached && cached.user) {
+        cached.user.name = name;
+        cached.requiresName = false;
+        setCachedUserInfo(cached);
+      }
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('名前更新エラー:', error);
+    return { success: false };
+  }
+}
+
 // 🌟 統合版：クイズ開始＆問題取得API
 export async function startQuizAndGetQuestions(userId, course) {
   try {
