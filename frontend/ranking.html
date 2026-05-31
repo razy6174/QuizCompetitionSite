@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ガチコース ランキング - Quiz App</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div id="app">
+    
+    <h2>🏆 ガチコース ランキング 🏆</h2>
+    <p>TOP 50</p>
+    
+    <div id="ranking-container">
+      <table id="ranking-table">
+        <thead>
+          <tr>
+            <th>順位</th>
+            <th>プレイヤー</th>
+            <th>スコア</th>
+            <th>タイム</th>
+          </tr>
+        </thead>
+        <tbody id="ranking-body">
+          <tr><td colspan="4">読み込み中...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <button id="back-to-course-btn" class="btn-secondary">
+        コース選択へ戻る
+      </button>
+    </div>
+
+  </div>
+  <script type="module" src="./ranking.js"></script>
+</body>
+</html>

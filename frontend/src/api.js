@@ -129,3 +129,15 @@ export async function finishQuizSession(sessionId, course) {
     return { success: false, error: '通信エラーが発生しました' };
   }
 }
+
+// 🌟 ランキングデータを取得する関数
+// （引数を指定しなければ、自動的にTOP50を取得します）
+export async function getRanking(limit = 50, offset = 0) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/ranking?limit=${limit}&offset=${offset}`);
+    return await response.json();
+  } catch (error) {
+    console.error('ランキング取得エラー:', error);
+    return { success: false, error: '通信エラーが発生しました' };
+  }
+}

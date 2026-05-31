@@ -127,6 +127,12 @@ if (result && result.success) {
       scoreElement.textContent = result.finalScore;
     }
 
+    // 🌟 追加：順位を画面に表示する！
+    const rankElement = document.getElementById('rank-display');
+    if (rankElement && result.rank) {
+      rankElement.textContent = `全体 ${result.rank} 位！`;
+    }
+
     // ③ 画面をパッと切り替える！
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'block';
