@@ -12,6 +12,7 @@ export default defineConfig({
         course: resolve(__dirname, 'course.html'),
         gachi: resolve(__dirname, 'gachi.html'),
         enjoy: resolve(__dirname, 'enjoy.html'),
+        ranking: resolve(__dirname, 'ranking.html'),
         
         // ※今後以下のページを作ったら、ここに追加していけばOKです！
         // quiz: resolve(__dirname, 'quiz.html'),
