@@ -81,21 +81,16 @@ export async function handleFinishQuiz(request, env, course) {
   if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
   try {
-    // フロントから sessionId と score（エンジョイ用）を受け取る
     const { sessionId, score } = await request.json();
-    
-    let finalScore = 0; // 🌟 フロントに返すためのスコア箱を用意
+    let finalScore = 0;
+    let currentRank = null; // 🌟 自分の順位を入れる箱を追加！
 
     if (course === 'gachi') {
-      // ==============================
-      // 🔥 ガチコースの処理（チート対策）
-      // ==============================
-      // 👑 フロントの点数は信用せず、DBから「本当の正解数」を自力で数える！
+      // 1. スコア計算
       const correctData = await env.DB.prepare(
         'SELECT COUNT(*) as count FROM answers WHERE gachi_session_id = ? AND is_correct = 1'
       ).bind(sessionId).first();
-
-      finalScore = correctData.count; // DBで数えた正確な点数をセット！
+      finalScore = correctData.count;
 
       const serverEndTime = new Date().toLocaleString('ja-JP', {
         timeZone: 'Asia/Tokyo',
@@ -103,27 +98,43 @@ export async function handleFinishQuiz(request, env, course) {
         hour: '2-digit', minute: '2-digit', second: '2-digit',
       }).replace(/\//g, '-');
 
+      // 2. スコアと終了時間を保存
       await env.DB.prepare(
         'UPDATE gachi_sessions SET end_time = ?, score = ? WHERE id = ?'
       ).bind(serverEndTime, finalScore, sessionId).run();
 
-    } else if (course === 'enjoy') {
-      // ==============================
-      // 🌸 エンジョイコースの処理
-      // ==============================
-      // エンジョイはランキングがないので、フロントから送られてきた score をそのまま信じる！
-      finalScore = score; 
+      // 🌟 3. 【新規追加】自分の順位を計算する最強のSQL！
+      // 自分より「点数が高い人」または「同点だけどタイムが短い人」の数を数えて +1 します。
+      const rankData = await env.DB.prepare(`
+        SELECT (
+          SELECT COUNT(*) + 1
+          FROM gachi_sessions as Other
+          WHERE Other.end_time IS NOT NULL AND (
+            Other.score > Current.score
+            OR (
+              Other.score = Current.score AND 
+              (julianday(Other.end_time) - julianday(Other.start_time)) < (julianday(Current.end_time) - julianday(Current.start_time))
+            )
+          )
+        ) as rank
+        FROM gachi_sessions as Current
+        WHERE Current.id = ?
+      `).bind(sessionId).first();
 
+      currentRank = rankData ? rankData.rank : null;
+
+    } else if (course === 'enjoy') {
+      finalScore = score;
       await env.DB.prepare(
         'UPDATE enjoy_sessions SET score = ? WHERE id = ?'
       ).bind(finalScore, sessionId).run();
     }
 
-    // 🌟🌟🌟 ここが修正の核心部！！ 🌟🌟🌟
-    // 確定した finalScore を、フロントエンドの result.finalScore に向けて送り返す！
+    // 🌟 4. 返事に rank も追加してあげる！
     return new Response(JSON.stringify({ 
       success: true,
-      finalScore: finalScore 
+      finalScore: finalScore,
+      rank: currentRank // エンジョイコースの場合は null が返ります
     }), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });

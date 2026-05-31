@@ -2,6 +2,7 @@
 import { handleUserAuth, handleUpdateName} from './handlers/user.js';
 import { handleStartQuizAndGetQuestions, handleFinishQuiz} from './handlers/session.js';
 import { handleSubmitAnswer } from './handlers/answer.js';
+import { handleGetRanking } from './handlers/ranking.js';
 
 
 export default {
@@ -49,6 +50,11 @@ export default {
 
     if (url.pathname === '/api/finish-quiz/enjoy' && request.method === 'POST') {
       return handleFinishQuiz(request, env, 'enjoy');
+    }
+
+    // 🌟 ランキングを取得するAPI
+    if (url.pathname === '/api/ranking' && request.method === 'GET') {
+      return handleGetRanking(request, env);
     }
 
     // 該当するAPIがない場合
