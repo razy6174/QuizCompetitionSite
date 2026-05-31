@@ -1,5 +1,5 @@
 // frontend/src/pages/gachi.js
-import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer, finishQuizSession} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer, finishQuizSession, getCurrentUserName} from '../api.js';
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
@@ -131,6 +131,13 @@ if (result && result.success) {
     const rankElement = document.getElementById('rank-display');
     if (rankElement && result.rank) {
       rankElement.textContent = `全体 ${result.rank} 位！`;
+    }
+
+    // 🌟🌟🌟 ここを追加！名前を書き換える処理 🌟🌟🌟
+    const userName = await getCurrentUserName();
+    const nameElement = document.getElementById('player-name-display');
+    if (nameElement) {
+      nameElement.textContent = userName;
     }
 
     // ③ 画面をパッと切り替える！
