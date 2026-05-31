@@ -2,53 +2,108 @@
 
 import { getRanking } from '../api.js';
 
-async function loadRanking() {
+// 🌟 設定値（定数）
+const LIMIT = 50;      // 1ページあたりの表示数
+const MAX_RANK = 300;  // ランキングの最大表示順位
+let currentOffset = 0; // 現在の開始位置（0なら1位から）
+
+// 🌟 ランキングを読み込んで表を更新する関数（引数に offset を取る）
+async function loadRanking(offset) {
   const tbody = document.getElementById('ranking-body');
-  
-  // APIからランキングデータ（TOP50）を取得
-  const result = await getRanking(50, 0);
+  tbody.innerHTML = '<tr><td colspan="4">読み込み中...</td></tr>';
+
+  // APIを叩く（例: limit=50, offset=0 or 50 or 100...）
+  const result = await getRanking(LIMIT, offset);
 
   if (result && result.success) {
-    tbody.innerHTML = ''; // 「読み込み中...」の文字を消す
+    tbody.innerHTML = '';
 
     if (result.ranking.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4">まだ記録がありません</td></tr>';
-      return;
+      tbody.innerHTML = '<tr><td colspan="4">この範囲にはまだ記録がありません</td></tr>';
+    } else {
+      result.ranking.forEach((data, index) => {
+        // 💡 オフセットを足すことで、2ページ目でも「51位」から正しく計算される！
+        const rank = offset + index + 1; 
+        
+        const timeText = data.time_seconds 
+          ? `${Math.floor(data.time_seconds / 60)}分${data.time_seconds % 60}秒` 
+          : '-';
+        
+        const tr = document.createElement('tr');
+        if (rank === 1) tr.classList.add('rank-1');
+        if (rank === 2) tr.classList.add('rank-2');
+        if (rank === 3) tr.classList.add('rank-3');
+
+        tr.innerHTML = `
+          <td>${rank}位</td>
+          <td>${data.name || '名無し'}</td>
+          <td class="score-text">${data.score}</td>
+          <td>${timeText}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
+    
+    // 🌟 表の更新が終わったら、ボタンの表示も更新する
+    updatePaginationUI(offset);
 
-    // 取得したデータをループして、1行ずつテーブルに追加する
-    result.ranking.forEach((data, index) => {
-      const rank = index + 1; 
-      
-      // タイム計算のロジック
-      const timeText = data.time_seconds 
-        ? `${Math.floor(data.time_seconds / 60)}分${data.time_seconds % 60}秒` 
-        : '-';
-      
-      const tr = document.createElement('tr');
-
-      // 🌟 【プロの小技】JSで色は塗らず、CSS用のクラス名だけを付与しておく
-      if (rank === 1) tr.classList.add('rank-1');
-      if (rank === 2) tr.classList.add('rank-2');
-      if (rank === 3) tr.classList.add('rank-3');
-
-      tr.innerHTML = `
-        <td>${rank}位</td>
-        <td>${data.name || '名無し'}</td>
-        <td class="score-text">${data.score}</td>
-        <td>${timeText}</td>
-      `;
-      tbody.appendChild(tr);
-    });
   } else {
     tbody.innerHTML = '<tr><td colspan="4" class="error-message">ランキングの取得に失敗しました</td></tr>';
   }
 }
 
-// 戻るボタンのルーティング処理
+// 🌟 ボタンのテキストと表示/非表示をコントロールする関数
+function updatePaginationUI(offset) {
+  const prevBtn = document.getElementById('prev-page-btn');
+  const nextBtn = document.getElementById('next-page-btn');
+  const info = document.getElementById('current-page-info');
+
+  // 真ん中のテキスト（例：51〜100位）
+  const currentStart = offset + 1;
+  const currentEnd = offset + LIMIT;
+  info.textContent = `${currentStart}〜${currentEnd}位`;
+
+  // ◀ 左ボタン（上位へ）の制御
+  if (offset === 0) {
+    // 1ページ目の時はボタンを隠す（visibilityを使うとレイアウトが崩れない）
+    prevBtn.style.visibility = 'hidden'; 
+  } else {
+    prevBtn.style.visibility = 'visible';
+    const prevStart = offset - LIMIT + 1;
+    const prevEnd = offset;
+    prevBtn.textContent = `◀ ${prevStart}〜${prevEnd}位`;
+  }
+
+  // ▶ 右ボタン（下位へ）の制御
+  if (offset + LIMIT >= MAX_RANK) {
+    // 300位まで到達したらボタンを隠す
+    nextBtn.style.visibility = 'hidden';
+  } else {
+    nextBtn.style.visibility = 'visible';
+    const nextStart = offset + LIMIT + 1;
+    const nextEnd = offset + LIMIT * 2;
+    nextBtn.textContent = `${nextStart}〜${nextEnd}位 ▶`;
+  }
+}
+
+// 🌟 イベントリスナー（ボタンが押された時の処理）
+document.getElementById('prev-page-btn').addEventListener('click', () => {
+  if (currentOffset >= LIMIT) {
+    currentOffset -= LIMIT;
+    loadRanking(currentOffset); // 新しいオフセットで再読み込み！
+  }
+});
+
+document.getElementById('next-page-btn').addEventListener('click', () => {
+  if (currentOffset + LIMIT < MAX_RANK) {
+    currentOffset += LIMIT;
+    loadRanking(currentOffset); // 新しいオフセットで再読み込み！
+  }
+});
+
 document.getElementById('back-to-course-btn').addEventListener('click', () => {
   window.location.href = 'course.html';
 });
 
-// 画面が表示された瞬間にランキングの読み込みを開始
-loadRanking();
+// 画面が表示された瞬間に最初の50件を読み込む
+loadRanking(currentOffset);

@@ -50,6 +50,12 @@ export async function getCurrentUserId() {
   return data?.success ? data.user.id : null;
 }
 
+// 🌟 現在のユーザー名を取得する関数（名前がなければ「あなた」を返す）
+export async function getCurrentUserName() {
+  const data = await loginAndGetUserInfo();
+  return data?.success && data.user.name ? data.user.name : 'あなた';
+}
+
 // 🌟 名前を登録・更新する関数
 export async function updateUserName(userId, name) {
   try {
