@@ -1,5 +1,5 @@
 // frontend/src/pages/enjoy.js
-import { getCurrentUserId, startQuizAndGetQuestions} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions, finishQuizSession} from '../api.js';
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
@@ -101,11 +101,36 @@ async function finishGame() {
   
   // 💡 ここで「終了時間を記録するAPI」を呼び出します（後で作る）
   // await finishQuizSession(currentUserId, currentSessionId, currentScore, 'enjoy');
+  // ① 終了APIを叩く（スコア計算はサーバーにお任せ！）
+    const result = await finishQuizSession(currentSessionId, 'enjoy', currentScore);
+    console.log('📦 APIからの返事:', result);
+  
+  if (result && result.success) {
+      // ② サーバーが計算した「正式なスコア」を結果画面に流し込む
+      // ※ HTML側に <span id="final-score-display">0</span> がある前提です
+      const scoreElement = document.getElementById('final-score-display');
+      if (scoreElement) {
+        scoreElement.textContent = result.finalScore;
+      }
 
-  // 結果画面へ切り替える
+       // 結果画面へ切り替える
   document.getElementById('quiz-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
+
+  }else alert('結果の保存に失敗しました。');
 }
+
+document.getElementById('back-to-course-btn').addEventListener('click', () => {
+  window.location.href = 'course.html';
+});
+
+// 🌟 青い「アンケートボタン」が押された時（新しいタブが開くのを少し待つ！）
+document.getElementById('survey-btn').addEventListener('click', () => {
+  // ブラウザが確実に新しいタブ（Forms）を開くための猶予（500ミリ秒）を与える
+  setTimeout(() => {
+    window.location.href = 'course.html';
+  }, 500); 
+});
 
 // ページ読み込み完了時に init を実行
 document.addEventListener('DOMContentLoaded', init);

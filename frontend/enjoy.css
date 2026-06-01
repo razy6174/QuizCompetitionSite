@@ -1,0 +1,191 @@
+@charset "UTF-8";
+
+/* 全体のベース設定：自然な色合いと読みやすいフォント */
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background-color: #f0fdf4; /* 優しい森のような薄いグリーン */
+    color: #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* 画面のコンテナ（白いカード風にして浮き立たせる） */
+#quiz-screen {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);  /* 柔らかい影で浮き立たせる */
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* 見出しのスタイル */
+h1 {
+    font-size: 2rem;
+    color: #166534; /* 深いフォレストグリーン */
+    margin-bottom: 1rem;
+}
+
+h2#question-text {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    line-height: 1.5;
+    color: #1e293b;
+}
+
+h3#question-number {
+    color: #059669; /* アクセントのグリーン */
+    font-size: 1.2rem;
+    margin-top: 0;
+    border-bottom: 2px solid #d1fae5;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+/* ボタンの共通設定 */
+button {
+    cursor: pointer;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+/* スタートボタン（目立つように暖色系に） */
+#start-btn {
+  background-color: #f59e0b; /* 琥珀色 / オレンジ */
+    color: white;
+    padding: 1rem 3rem;
+    margin-top: 1.5rem;
+    border-radius: 9999px; /* 丸みのある親しみやすい形 */
+    box-shadow: 0 4px 6px rgba(245, 158, 11, 0.25);
+}
+
+#start-btn:hover {
+    background-color: #d97706;
+    transform: translateY(-2px); /* ホバー時に少し浮き上がる */
+}
+
+#start-btn:active {
+    transform: translateY(0);
+}
+
+/* 選択肢ボタンのコンテナ */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* 選択肢ボタン（押しやすさを重視） */
+.choice-btn {
+    background-color: #f8fafc;
+    color: #334155;
+    padding: 1.2rem;
+    border-radius: 12px;
+    text-align: left;
+    border: 2px solid #e2e8f0;
+    font-size: 1.1rem;
+}
+
+.choice-btn:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+  transform: translateX(4px); /* ホバー時に右へ少しスライドするアニメーション */
+}
+
+.choice-btn:active {
+    background-color: #e2e8f0;
+}
+
+/* =========================================
+    📱 スマホ向けの最適化（画面幅が600px以下の場合に発動）
+   ========================================= */
+@media (max-width: 600px) {
+
+    body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background-color: #f0fdf4; /* 優しい森のような薄いグリーン */
+    color: #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 11vh;
+    min-height: 100vh;
+    margin: 0;
+}
+
+  /* スマホでは画面のギリギリまで広く使う */
+    #start-screen, #quiz-screen {
+    width: 85%;
+    padding: 1.5rem;
+    min-height: 50vh; /* PCより余白を減らして圧迫感をなくす */
+    }
+
+  /* スマホでは見出しが改行されすぎないように少し小さくする */
+h1 {
+    font-size: 1.3rem;
+}
+
+h2#question-text {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+
+p {
+    font-size: 0.95rem;
+}
+
+  /* 選択肢ボタンを押しやすく（高さを出す） */
+.choice-btn {
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+  /* スタートボタンをスマホ画面に合わせて横幅いっぱいに広げる */
+#start-btn {
+    width: 100%;
+    padding: 1rem;
+}
+}
+
+/* =========================================
+    🔄 スマホの「横画面（ランドスケープ）」向けの最適化
+   ========================================= */
+@media (max-width: 950px) and (orientation: landscape) {
+  /* 画面の高さが狭くなるので、全体の余白を限界まで削る */
+    #start-screen, #quiz-screen {
+        padding: 1rem;
+        width: 95%;
+    }
+
+  /* 見出しも邪魔にならないように少し小さめ＆余白少なめに */
+    h1 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    h2#question-text {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+    }
+
+  /* 💡 ここが最大の魔法！選択肢を「縦並び」から「2列のグリッド」に変える！ */
+    #choices-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 左右に1:1で分割して2列にする */
+        gap: 0.5rem; /* ボタン同士の隙間を少し狭くする */
+        margin-top: 1rem;
+    }
+
+  /* ボタン自体の高さも少しスリムにする */
+    .choice-btn {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+}
