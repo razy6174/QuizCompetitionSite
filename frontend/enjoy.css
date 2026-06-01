@@ -12,12 +12,26 @@ body {
     margin: 0;
 }
 
+#start-screen {
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
 /* 画面のコンテナ（白いカード風にして浮き立たせる） */
-#quiz-screen {
+#quiz-screen  {
     background: white;
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);  /* 柔らかい影で浮き立たせる */
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+#result-screen {
+    padding: 2.5rem;
+    border-radius: 16px;
     width: 90%;
     max-width: 600px;
     text-align: center;
@@ -109,19 +123,11 @@ button {
 @media (max-width: 600px) {
 
     body {
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background-color: #f0fdf4; /* 優しい森のような薄いグリーン */
-    color: #334155;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    padding-top: 11vh;
-    min-height: 100vh;
-    margin: 0;
 }
 
   /* スマホでは画面のギリギリまで広く使う */
-    #start-screen, #quiz-screen {
+    #quiz-screen {
     width: 85%;
     padding: 1.5rem;
     min-height: 50vh; /* PCより余白を減らして圧迫感をなくす */
@@ -159,7 +165,7 @@ p {
    ========================================= */
 @media (max-width: 950px) and (orientation: landscape) {
   /* 画面の高さが狭くなるので、全体の余白を限界まで削る */
-    #start-screen, #quiz-screen {
+    #quiz-screen {
         padding: 1rem;
         width: 95%;
     }
@@ -188,4 +194,46 @@ p {
         padding: 0.8rem;
         font-size: 0.95rem;
     }
+}
+
+/* =========================================
+   🎉 結果画面の専用スタイル
+   ========================================= */
+.score-container {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+#final-score-display {
+    font-size: 3rem; /* スコアの数字をドカンと大きく！ */
+    font-weight: bold;
+    color: #ef4444; /* 目立つ赤色 */
+}
+
+.action-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* ボタン同士の隙間 */
+}
+
+/* アンケートボタンと戻るボタンの共通設定 */
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    text-decoration: none; /* リンクの下線を消す */
+}
+
+.btn-primary {
+    background-color: #3b82f6; /* アンケートは青 */
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #e2e8f0; /* 戻るボタンは控えめなグレー */
+    color: #475569;
 }
