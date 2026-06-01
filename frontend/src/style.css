@@ -53,3 +53,56 @@ body {
     transform: scale(1);
   }
 }
+
+/* 🌟 ロゴのラッパー（縦に並べる用） */
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 320px;
+}
+
+/* 🌟 ロゴのアニメーションを改良（登場 → その後フワフワ浮く） */
+.splash-logo {
+  width: 100%;
+  /* pop-inが終わった後、floatingアニメーションを無限ループさせる */
+  animation: logo-pop-in 1s ease forwards, floating 3s ease-in-out 1s infinite;
+}
+
+/* フワフワ浮遊するアニメーション */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); } /* 8pxだけ上に浮く */
+  100% { transform: translateY(0px); }
+}
+
+/* 🌟 プログレスバー（細くてスタイリッシュな線） */
+.progress-bar-container {
+  width: 60%;
+  height: 3px;
+  background-color: #f1f3f5;
+  border-radius: 3px;
+  margin-top: 30px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fade-in 0.5s ease 1s forwards; /* ロゴ登場の1秒後にフワッと出す */
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #2c3e50; /* ロゴのヴィンテージ感に合わせたシックな色 */
+  border-radius: 3px;
+  /* 2.5秒（待機時間）かけてスッと伸びる */
+  animation: load-progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+}
+
+@keyframes load-progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes fade-in {
+  to { opacity: 1; }
+}
