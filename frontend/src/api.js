@@ -121,12 +121,12 @@ export async function submitQuizAnswer(sessionId, questionId, selectedChoice) {
 }
 
 // 🌟 クイズ終了をバックエンドに伝える関数
-export async function finishQuizSession(sessionId, course) {
+export async function finishQuizSession(sessionId, course, score = 0) {
   try {
     const response = await fetch(`${API_BASE_URL}/api/finish-quiz/${course}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId: sessionId }) // 💡 スコアは送らない！IDだけ！
+      body: JSON.stringify({ sessionId: sessionId, course: course, score: score })
     });
     
     return await response.json();
