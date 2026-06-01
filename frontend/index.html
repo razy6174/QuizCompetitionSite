@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz Competition Site</title> <!-- タイトルはお好みで変えてください -->
-  </head>
-  <body>
-    <!-- この #app の中に、main.js が画面を作ってくれます -->
-    <div id="app"></div> 
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BEETLE STATION</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app">
+    
+    <div id="splash-screen" class="splash-container">
+      <img src="/BEETLE_STATIONロゴ.png" alt="BEETLE STATION" class="splash-logo">
+    </div>
+
+    <div id="auth-container" style="display: none;">
+      </div>
+
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
 </html>
