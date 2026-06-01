@@ -1,46 +1,60 @@
-// frontend/src/main.js
+// frontend/src/main.js を上書き更新
 
 import './style.css';
-import { loginAndGetUserInfo, updateUserName } from './api.js'; // 👈 updateUserName を追加
+import { loginAndGetUserInfo, updateUserName } from './api.js';
 
-async function checkAuthAndRedirect() {
-  console.log('ログイン状態を確認中...');
-  const result = await loginAndGetUserInfo();
+async function initializeApp() {
+  // 1. ロゴアニメーションを見せるための最低待機時間（2.5秒）
+  const splashTimer = new Promise(resolve => setTimeout(resolve, 2500));
+  
+  // 2. その裏で、APIを叩いてユーザー情報を取得する
+  const authPromise = loginAndGetUserInfo();
 
+  // 3. 待機時間とAPI取得の両方が終わるまで待つ！
+  const [_, result] = await Promise.all([splashTimer, authPromise]);
+
+  // 4. スプラッシュ画面をフェードアウトさせる
+  const splashScreen = document.getElementById('splash-screen');
+  splashScreen.style.opacity = '0';
+
+  // 0.5秒後（CSSのtransitionと同じ時間）に完全に非表示にして、次の画面へ
+  setTimeout(() => {
+    splashScreen.style.display = 'none';
+    const authContainer = document.getElementById('auth-container');
+    authContainer.style.display = 'block';
+    
+    handleAuthResult(result, authContainer);
+  }, 500);
+}
+
+function handleAuthResult(result, container) {
   if (result && result.success) {
-    // 🌟 名前が未登録の場合：入力フォームを表示！
     if (result.requiresName) {
-      console.log('新規ユーザーです。名前入力画面を表示します。');
-      
-      document.querySelector('#app').innerHTML = `
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; text-align: center;">
-          <h2>ようこそ！</h2>
-          <p>ランキングに表示するプレイヤー名を入力してください。</p>
-          <input type="text" id="playerNameInput" placeholder="プレイヤー名" style="padding: 10px; font-size: 16px; margin: 15px 0; width: 80%; max-width: 300px;">
-          <br>
-          <button id="submitNameBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px;">
+      // 🌟 名前未登録の場合：スマホ向けに調整した入力フォーム
+      container.innerHTML = `
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center;">
+          <h2 style="margin-bottom: 10px; font-size: 24px;">ようこそ！</h2>
+          <p style="margin-bottom: 30px; font-size: 14px; color: #666;">ランキングに表示する<br>プレイヤー名を入力してください</p>
+          <input type="text" id="playerNameInput" placeholder="プレイヤー名" style="width: 100%; max-width: 300px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
+          <button id="submitNameBtn" style="width: 100%; max-width: 300px; padding: 15px; font-size: 16px; font-weight: bold; background-color: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
             登録して始める
           </button>
         </div>
       `;
 
-      // 登録ボタンが押された時の処理
+      // 登録ボタンのイベント（以前のロジックと同じ）
       document.getElementById('submitNameBtn').addEventListener('click', async () => {
         const nameInput = document.getElementById('playerNameInput').value.trim();
         if (!nameInput) {
           alert('名前を入力してください！');
           return;
         }
-
         const btn = document.getElementById('submitNameBtn');
         btn.disabled = true;
         btn.textContent = '登録中...';
 
-        // 名前をサーバーに保存
         const updateResult = await updateUserName(result.user.id, nameInput);
-        
         if (updateResult.success) {
-          // 登録成功したらコース選択画面へ！
           window.location.href = 'course.html';
         } else {
           alert('名前の登録に失敗しました。');
@@ -50,28 +64,19 @@ async function checkAuthAndRedirect() {
       });
 
     } else {
-      // 🌟 名前がすでに登録されている場合：そのままコース選択へ直行！
-      console.log(`おかえりなさい、${result.user.name}さん！コース選択画面へ移動します。`);
+      // 🌟 登録済みの場合：そのままコース選択画面へ直行！
       window.location.href = 'course.html';
     }
-    
   } else {
-    document.querySelector('#app').innerHTML = `
-      <div style="text-align: center; margin-top: 50px;">
+    // 認証エラー時
+    container.innerHTML = `
+      <div style="text-align: center; padding: 40px 20px;">
         <h2>認証エラー</h2>
-        <p>ログインに失敗しました。ページをリロードするか、再度アクセスし直してください。</p>
+        <p>ログインに失敗しました。<br>ページをリロードしてください。</p>
       </div>
     `;
-    console.error('認証に失敗しました:', result);
   }
 }
 
-// 画面の初期表示
-document.querySelector('#app').innerHTML = `
-  <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
-    <h2>🔄 認証しています...</h2>
-    <p>まもなくコース選択画面へ移動します</p>
-  </div>
-`;
-
-checkAuthAndRedirect();
+// アプリ起動！
+initializeApp();
