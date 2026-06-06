@@ -1,6 +1,7 @@
 // frontend/src/pages/enjoy.js
 import { getCurrentUserId, startQuizAndGetQuestions, finishQuizSession} from '../api.js';
-
+import '../style.css';
+import '../css/enjoy.css';
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
 // ==========================================

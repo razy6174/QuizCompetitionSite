@@ -4,32 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>コース選択 - BEETLE STATION</title>
-  <link rel="stylesheet" href="./src/style.css">
 </head>
 <body>
   <div id="app" class="course-container">
     
     <header class="course-header">
       <div class="user-info">
-        👤 プレイヤー: <strong id="header-user-name">読み込み中...</strong>
+        <span class="user-badge">探検家</span>
+        <strong id="header-user-name">読み込み中...</strong>
       </div>
-      <h1>挑戦するコースを選択してください</h1>
+      <h1>挑戦するコースを<br>選択してください</h1>
     </header>
 
     <nav class="course-menu">
       
       <a href="enjoy.html" class="menu-card enjoy-card">
-        <span class="card-title">エンジョイコース</span>
-        <span class="card-desc">（気軽にクイズを楽しむ）</span>
+        <img src="/icon-enjoy.png" alt="" class="card-icon">
+        <div class="card-text-area">
+          <span class="card-title">エンジョイコース</span>
+          <span class="card-desc">気軽にクイズを楽しむ</span>
+        </div>
       </a>
 
       <a href="gachi.html" class="menu-card gachi-card">
-        <span class="card-title">ガチコース</span>
-        <span class="card-desc">（タイムとスコアでランキングに挑戦）</span>
+        <img src="/icon-gachi.png" alt="" class="card-icon">
+        <div class="card-text-area">
+          <span class="card-title">ガチコース</span>
+          <span class="card-desc">タイムとスコアで競う</span>
+        </div>
       </a>
 
       <a href="ranking.html" class="menu-card ranking-card">
-        <span class="card-title">🏆 ランキングを見る</span>
+        <img src="/icon-ranking.png" alt="" class="card-icon">
+        <div class="card-text-area">
+          <span class="card-title">ランキングを見る</span>
+        </div>
       </a>
 
     </nav>

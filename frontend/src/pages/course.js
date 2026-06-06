@@ -1,4 +1,6 @@
 import { getCurrentUserId, getCurrentUserName } from '../api.js';
+import '../style.css';
+import '../css/course.css';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const userName = await getCurrentUserName();
