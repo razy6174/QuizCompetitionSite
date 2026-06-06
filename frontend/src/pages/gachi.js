@@ -9,6 +9,8 @@ let currentQuestionIndex = 0; // 今何問目？ (0〜14)
 let currentScore = 0;         // 正解数（スコア）
 let currentSessionId = null;  // サーバーから発行された今回の整理券番号
 let currentUserId = null;     // 今ログインしているユーザーのIDを保存する箱
+let timerInterval; // タイマーを止めるための変数
+let startTime;     // スタート時の時間
 
 async function init() {
   console.log('ユーザー情報を取得しています...');
@@ -50,6 +52,20 @@ document.getElementById('start-btn').addEventListener('click', async () => {
   document.getElementById('quiz-screen').style.display = 'block';
   
   displayQuestion(currentQuestionIndex); 
+
+  // 🌟 タイマー起動！
+  startTime = Date.now();
+  timerInterval = setInterval(() => {
+    // 経過ミリ秒を秒に変換
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    
+    // 00:00 の形式（ゼロ埋め）にするプロの小技
+    const m = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+    const s = String(elapsedSeconds % 60).padStart(2, '0');
+    
+    // 画面のテキストだけを更新
+    document.getElementById('timer-display').textContent = `⏱ ${m}:${s}`;
+  }, 1000); // 1000ミリ秒（1秒）ごとに実行
 });
 
 // ==========================================
@@ -57,7 +73,8 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 // ==========================================
 function displayQuestion(index) {
   const q = quizData[index]; 
-  document.getElementById('question-number').textContent = `第${index + 1}問`;
+// 「第〇問」ではなく「〇 / 15 問目」として出力
+  document.getElementById('question-progress').textContent = `${index + 1} / 15 問目`;
   document.getElementById('question-text').textContent = q.question_text;
   
   const buttons = document.querySelectorAll('.choice-btn');
@@ -121,6 +138,8 @@ choiceButtons.forEach((button, buttonIndex) => {
 // ==========================================
 async function finishGame() {
   console.log(`✅ 15問終了！ スコア: ${currentScore} / 15`);
+
+  clearInterval(timerInterval); // タイマーを止める
   
 // ① 終了APIを叩く（スコア計算はサーバーにお任せ！）
   const result = await finishQuizSession(currentSessionId, 'gachi', currentScore);

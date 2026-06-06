@@ -1,4 +1,4 @@
-import { getCurrentUserId } from '../api.js';
+import { getCurrentUserId, getCurrentUserName } from '../api.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const userName = await getCurrentUserName();

@@ -25,18 +25,22 @@
 
   </div>
 
-  <div id="quiz-screen" style="display: none;">
-    <h3 id="question-number">第1問</h3>
-    
-    <h2 id="question-text">読み込み中...</h2>
-    
-    <div id="choices-container">
-      <button class="choice-btn"></button>
-      <button class="choice-btn"></button>
-      <button class="choice-btn"></button>
-      <button class="choice-btn"></button>
-    </div>
+<div id="quiz-screen" class="screen-container" style="display: none;">
+  
+  <header class="quiz-header">
+    <span id="question-progress" class="progress-text">1 / 15 問目</span>
+    <span id="timer-display" class="timer-text">⏱ 00:00</span>
+  </header>
+
+  <h2 id="question-text" class="question-text"></h2>
+  
+  <div class="choices-container">
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
+    <button class="choice-btn"></button>
   </div>
+</div>
 
 <div id="result-screen" style="display: none;">
   
