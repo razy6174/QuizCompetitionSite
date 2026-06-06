@@ -47,10 +47,20 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
       newSessionId = sessionResults[0].id;
 
       // ② エンジョイの問題（course_type = 'enjoy'）をランダムに持ってくる！
-      // （※もしエンジョイコースを10問で終わらせたい場合は、LIMIT 15 を LIMIT 10 に変更してください）
-      const { results: qResults } = await env.DB.prepare(
-        'SELECT * FROM questions WHERE course_type = ? ORDER BY RANDOM() LIMIT 15'
-      ).bind('enjoy').all();
+      // （＊前半１４問から５問、後半１０問から５問）
+      const { results: qResults } = await env.DB.prepare(`
+        SELECT * FROM (
+          SELECT * FROM questions 
+          WHERE course_type = ? AND image_url IS NOT NULL 
+          ORDER BY RANDOM() LIMIT 5
+        )
+        UNION ALL
+        SELECT * FROM (
+          SELECT * FROM questions 
+          WHERE course_type = ? AND image_url IS NULL 
+          ORDER BY RANDOM() LIMIT 5
+        )
+      `).bind('enjoy', 'enjoy').all();
       quizResults = qResults;
     }
 

@@ -90,21 +90,23 @@ button {
 
 /* 選択肢ボタンのコンテナ */
 #choices-container {
-    display: flex;
-    flex-direction: column;
+    display: grid; /* 🌟 魔法の箱「グリッド」を使う宣言 */
+    grid-template-columns: repeat(2, 1fr); /* 🌟 画面を「1:1」の2列に分割する命令 */
     gap: 1rem;
     margin-top: 2rem;
 }
 
 /* 選択肢ボタン（押しやすさを重視） */
+/* 🌟 既存の .choice-btn を上書き（左側にマークを置くスペースを空ける） */
 .choice-btn {
     background-color: #f8fafc;
     color: #334155;
-    padding: 1.2rem;
+    padding: 1.2rem 1.2rem 1.2rem 3rem; /* 👈 左だけ3remに広げる！ */
     border-radius: 12px;
     text-align: left;
     border: 2px solid #e2e8f0;
     font-size: 1.1rem;
+    position: relative; /* 👈 マークを配置するための基準にする */
 }
 
 .choice-btn:hover {
@@ -116,6 +118,41 @@ button {
 .choice-btn:active {
     background-color: #e2e8f0;
 }
+/* =========================================
+   ✅ 正解・不正解のアニメーション用スタイル
+   ========================================= */
+/* ⭕️❌マークの共通設定（左端の真ん中に配置） */
+.choice-btn::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 💡 縦も横も「完全など真ん中」に配置する最強の魔法 */
+    font-size: 4.5rem; /* ドカンと大きくする！ */
+    opacity: 0.25; /* 💡 25%の濃さに透かして「背景スタンプ」のようにする */
+    pointer-events: none; /* マークがクリックの邪魔をしないようにするおまじない */
+}
+
+/* ⭕️ 正解の時のスタイル（緑色） */
+.choice-btn.correct {
+    background-color: #dcfce7;
+    border-color: #22c55e;
+    color: #166534;
+}
+.choice-btn.correct::before {
+    content: "◯";
+}
+
+/* ❌ 不正解の時のスタイル（赤色） */
+.choice-btn.incorrect {
+    background-color: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+.choice-btn.incorrect::before {
+    content: "✕";
+}
+
+
 
 /* =========================================
     📱 スマホ向けの最適化（画面幅が600px以下の場合に発動）
