@@ -15,7 +15,17 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
       // ==============================
       // 🔥 ガチコースの処理
       // ==============================
-      
+      // 🌟 新規追加：すでにプレイ済みかチェックする
+      const existingSession = await env.DB.prepare(
+        'SELECT id FROM gachi_sessions WHERE user_id = ?'
+      ).bind(userId).first();
+
+      if (existingSession) {
+        // すでにプレイ済みなら、専用のエラーコードを返す
+        return new Response(JSON.stringify({ success: false, error: 'ALREADY_PLAYED' }), {
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+      }
       // ガチコース専用：日本時間の時刻を取得
       const serverStartTime = new Date().toLocaleString('ja-JP', {
         timeZone: 'Asia/Tokyo',

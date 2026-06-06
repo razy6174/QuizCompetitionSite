@@ -31,7 +31,14 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 
   // ① 1回の通信で「時間記録」と「問題取得」を同時に終わらせる！（courseに 'gachi' を指定）
   const result = await startQuizAndGetQuestions(currentUserId, 'gachi');
-  
+
+  // 🌟 追加：2回目プレイの専用アラート
+  if (result && result.error === 'ALREADY_PLAYED') {
+    alert('ガチコースは1度しか挑戦できません！ランキングで結果を確認しましょう！');
+    window.location.href = 'ranking.html'; // 弾いてランキング画面に飛ばす！
+    return;
+  }
+
   if (!result?.success) return alert('通信エラーが発生しました。');
 
   // ② 届いたダンボール箱（result）から、整理券と問題データを取り出す！

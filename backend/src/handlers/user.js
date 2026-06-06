@@ -22,9 +22,15 @@ export async function handleUserAuth(request, env) {
 
     // ③ ユーザーが存在しなかったら新規登録する
     if (!user) {
+      const serverCreatedAt = new Date().toLocaleString('ja-JP', {
+        timeZone: 'Asia/Tokyo',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+      }).replace(/\//g, '-');
+
       const newUser = await env.DB.prepare(
-        'INSERT INTO users (email) VALUES (?) RETURNING *'
-      ).bind(userEmail).first();
+        'INSERT INTO users (email, created_at) VALUES (?, ?) RETURNING *'
+      ).bind(userEmail, serverCreatedAt).first();
       
       user = newUser;
       console.log('新規ユーザーを登録しました:', userEmail);
