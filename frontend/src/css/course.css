@@ -67,8 +67,8 @@
 
 /* 🌟 アイコン画像とテキストエリア */
 .card-icon {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   margin-right: 16px;
   background-color: transparent; 
@@ -103,10 +103,4 @@
 
 .ranking-card {
   border-left: 12px solid #f9a825;
-  justify-content: center;
-}
-
-.ranking-card .card-icon {
-  width: 40px;
-  height: 40px;
 }
