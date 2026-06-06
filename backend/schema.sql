@@ -37,6 +37,7 @@ CREATE TABLE questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT, -- 問題番号
     course_type TEXT NOT NULL,            -- コースの種類（'gachi' または 'enjoy'）
     question_text TEXT NOT NULL,          -- 問題文
+    image_url TEXT,                       -- 問題の画像URL
     choice_a TEXT NOT NULL,               -- 選択肢A
     choice_b TEXT NOT NULL,               -- 選択肢B
     choice_c TEXT NOT NULL,               -- 選択肢C

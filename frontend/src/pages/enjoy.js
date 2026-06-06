@@ -52,6 +52,14 @@ function displayQuestion(index) {
   const q = quizData[index]; 
   document.getElementById('question-number').textContent = `第${index + 1}問`;
   document.getElementById('question-text').textContent = q.question_text;
+
+  const imgElement = document.getElementById('question-image');
+  if (q.image_url) {
+    imgElement.src = q.image_url;
+    imgElement.style.display = 'block';
+  } else {
+    imgElement.style.display = 'none';
+  }
   
   const buttons = document.querySelectorAll('.choice-btn');
   buttons[0].textContent = q.choice_a;
@@ -65,31 +73,47 @@ function displayQuestion(index) {
 // ==========================================
 const choiceButtons = document.querySelectorAll('.choice-btn');
 const choiceMap = ['A', 'B', 'C', 'D'];
+
 choiceButtons.forEach((button, buttonIndex) => {
-  // 4つのボタンそれぞれに「クリックされたら」の処理をセット
   button.addEventListener('click', () => {
+    
+    // 🛡️ 連打防止：判定中は全てのボタンを押せなくする（ロック！）
+    choiceButtons.forEach(btn => btn.disabled = true);
+
     const currentQuestion = quizData[currentQuestionIndex];
     const selectedChoice = choiceMap[buttonIndex];
 
-    // 💡 ① フロントエンドで正誤判定を行い、スコアを更新する
+    // 💡 ① 判定して、押したボタンに色（クラス）をつける！
     if (currentQuestion.correct_choice === selectedChoice) {
       currentScore++;
       console.log('⭕️ 正解！ 現在のスコア:', currentScore);
+      button.classList.add('correct'); // 緑色＋⭕️にする
     } else {
       console.log(`❌ 不正解... 正解は ${currentQuestion.correct_choice} でした`);
+      button.classList.add('incorrect'); // 赤色＋❌にする
+      // 正解の選択肢に色をつける
+      const correctButton = choiceButtons[choiceMap.indexOf(currentQuestion.correct_choice)];
+      correctButton.classList.add('correct');
     }
 
-    // ② 次の問題へ進む準備
-    currentQuestionIndex++; // インデックスを1増やす
+    // ⏱️ ② 1秒（1000ミリ秒）待ってから、次の処理へ進む！
+    setTimeout(() => {
+      // 色のシールを剥がして、元の白いボタンに戻す
+      choiceButtons.forEach(btn => btn.classList.remove('correct', 'incorrect'));
+      // ボタンのロックを解除する
+      choiceButtons.forEach(btn => btn.disabled = false);
 
-    // ③ まだ問題が残っているかチェック
-    if (currentQuestionIndex < 15) {
-      // 残っていたら次の問題を表示！
-      displayQuestion(currentQuestionIndex);
-    } else {
-      // 15問終わったら終了処理へバトンタッチ！
-      finishGame();
-    }
+      // ③ 次の問題へ進む準備
+      currentQuestionIndex++;
+
+      // ④ まだ問題が残っているかチェック
+      if (currentQuestionIndex < 10) {
+        displayQuestion(currentQuestionIndex);
+      } else {
+        finishGame();
+      }
+    }, 1000); // 👈 1000 = 1秒（短くしたい時は 800 などに調整可能）
+
   });
 });
 
@@ -97,7 +121,7 @@ choiceButtons.forEach((button, buttonIndex) => {
 // 🏁 5. ゲーム終了処理
 // ==========================================
 async function finishGame() {
-  console.log(`✅ 15問終了！ スコア: ${currentScore} / 15`);
+  console.log(`✅ 10問終了！ スコア: ${currentScore} / 10`);
   
   // 💡 ここで「終了時間を記録するAPI」を呼び出します（後で作る）
   // await finishQuizSession(currentUserId, currentSessionId, currentScore, 'enjoy');
