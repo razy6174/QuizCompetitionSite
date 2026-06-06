@@ -6,10 +6,23 @@
 </head>
 <body>
   
-  <div id="start-screen">
-    <h1>🔥 ガチコースへようこそ！</h1>
-    <p>準備ができたらスタートを押してください。</p>
-    <button id="start-btn">クイズスタート！</button>
+  <div id="start-screen" class="screen-container">
+  
+  <h2>ガチコースに挑戦</h2>
+  
+  <div class="warning-box">
+    <strong>⚠️ 注意事項</strong>
+    <ul class="warning-list">
+      <li>このコースは<strong>1人1回</strong>しか挑戦できません。</li>
+      <li>「正解数」と「クリアタイム」でランキングが決定します。</li>
+      <li>途中でページを閉じると記録が残りません。</li>
+    </ul>
+  </div>
+
+  <button id="start-btn" class="btn-primary">
+    準備ができたらスタート！
+  </button>
+
   </div>
 
   <div id="quiz-screen" style="display: none;">

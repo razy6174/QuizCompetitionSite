@@ -2,25 +2,40 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>コース選択</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>コース選択 - BEETLE STATION</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <h1>挑戦するコースを選択してください</h1>
-  
-  <a href="enjoy.html">
-    <button>エンジョイコース</button>
-  </a>
+  <div id="app" class="course-container">
+    
+    <header class="course-header">
+      <div class="user-info">
+        👤 プレイヤー: <strong id="header-user-name">読み込み中...</strong>
+      </div>
+      <h1>挑戦するコースを選択してください</h1>
+    </header>
 
-  <a href="gachi.html">
-    <button>ガチコース</button>
-  </a>
+    <nav class="course-menu">
+      
+      <a href="enjoy.html" class="menu-card enjoy-card">
+        <span class="card-title">エンジョイコース</span>
+        <span class="card-desc">（気軽にクイズを楽しむ）</span>
+      </a>
 
-  <a href="ranking.html">
-    <button>ランキング</button>
-  </a>
+      <a href="gachi.html" class="menu-card gachi-card">
+        <span class="card-title">ガチコース</span>
+        <span class="card-desc">（タイムとスコアで全国と競う）</span>
+      </a>
 
-  </body>
+      <a href="ranking.html" class="menu-card ranking-card">
+        <span class="card-title">🏆 ランキングを見る</span>
+      </a>
+
+    </nav>
+
+  </div>
+
+  <script type="module" src="./src/pages/course.js"></script>
+</body>
 </html>
-
-
-<script type="module" src="./src/pages/course.js"></script>

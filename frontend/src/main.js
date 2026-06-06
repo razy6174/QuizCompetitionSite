@@ -35,7 +35,7 @@ function handleAuthResult(result, container) {
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center;">
           <h2 style="margin-bottom: 10px; font-size: 24px;">ようこそ！</h2>
           <p style="margin-bottom: 30px; font-size: 14px; color: #666;">ランキングに表示する<br>プレイヤー名を入力してください</p>
-          <input type="text" id="playerNameInput" placeholder="プレイヤー名" style="width: 100%; max-width: 300px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
+          <input type="text" id="playerNameInput" maxlength="12" placeholder="ユーザー名(最大12文字)" style="width: 100%; max-width: 300px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
           <button id="submitNameBtn" style="width: 100%; max-width: 300px; padding: 15px; font-size: 16px; font-weight: bold; background-color: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
             登録して始める
           </button>

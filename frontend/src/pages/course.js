@@ -1,5 +1,10 @@
 import { getCurrentUserId } from '../api.js';
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const userName = await getCurrentUserName();
+  document.getElementById('header-user-name').textContent = userName;
+});
+
 let currentUserId = null;
 
 async function init() {
