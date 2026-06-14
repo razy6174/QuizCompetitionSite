@@ -56,7 +56,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 // ==========================================
 function displayQuestion(index) {
   const q = quizData[index]; 
-  document.getElementById('question-number').textContent = `第${index + 1}問`;
+  document.getElementById('question-number').textContent = `${index + 1} / 10問目`;
   document.getElementById('question-text').textContent = q.question_text;
 
   const imgElement = document.getElementById('question-image');
