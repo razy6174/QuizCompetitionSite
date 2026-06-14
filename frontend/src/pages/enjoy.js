@@ -1,5 +1,5 @@
 // frontend/src/pages/enjoy.js
-import { getCurrentUserId, startQuizAndGetQuestions, finishQuizSession} from '../api.js';
+import { getCurrentUserId, startQuizAndGetQuestions, finishQuizSession, getCurrentUserName} from '../api.js';
 import '../style.css';
 import '../css/enjoy.css';
 // ==========================================
@@ -10,6 +10,11 @@ let currentQuestionIndex = 0; // 今何問目？ (0〜14)
 let currentScore = 0;         // 正解数（スコア）
 let currentSessionId = null;  // サーバーから発行された今回の整理券番号
 let currentUserId = null;     // 今ログインしているユーザーのIDを保存する箱
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const userName = await getCurrentUserName();
+  document.getElementById('header-user-name').textContent = userName;
+});
 
 async function init() {
   console.log('ユーザー情報を取得しています...');
