@@ -167,3 +167,18 @@ h2 {
   font-size: 16px !important;
   font-weight: 900 !important;
 }
+
+/* 🌟 表彰台のタイムのスタイル */
+.podium-time {
+  font-size: 12px;
+  font-weight: bold;
+  color: #6d4c41; /* 少し落ち着いた茶色 */
+  margin-top: 4px;
+}
+
+/* 🌟 戻るボタンのコンテナ周り */
+.back-btn-container {
+  margin-top: 30px;
+  padding-bottom: 40px; /* 画面の一番下に少し余裕を持たせる */
+  text-align: center;
+}

@@ -36,10 +36,17 @@ async function loadRanking(offset) {
       const top3 = result.ranking.slice(0, 3);
       listData = result.ranking.slice(3); 
 
-      // 表彰台に文字をセットする関数（データがない場合も考慮）
+      // 🌟 表彰台に文字とタイムをセットする関数
       const setPodium = (rank, data) => {
+        // 名前とスコア
         document.getElementById(`podium-name-${rank}`).textContent = data ? (data.name || '名無し') : '-';
         document.getElementById(`podium-score-${rank}`).textContent = data ? `${data.score}点` : '-';
+        
+        // 🌟 タイムの計算とセット
+        const timeText = (data && data.time_seconds) 
+          ? `${Math.floor(data.time_seconds / 60)}分${data.time_seconds % 60}秒` 
+          : '-';
+        document.getElementById(`podium-time-${rank}`).textContent = timeText;
       };
       
       // 左から2位、1位、3位の順にセット
