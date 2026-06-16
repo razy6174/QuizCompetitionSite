@@ -2,31 +2,66 @@
    ガチコース専用スタイル (gachi.css)
    ========================================== */
 
-/* 🌟 コンテナ共通（木の看板・羊皮紙風カード） */
-#start-screen, #quiz-screen, #result-screen {
+/* 🌟 全体のレイアウト（上下左右の中央配置） */
+.gachi-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 画面の縦中央に寄せる */
+}
+
+/* 🌟 ユーザー情報ヘッダー */
+.header-area {
+  text-align: right; /* バッジを右上に配置 */
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.user-info {
+  display: inline-flex;
+  align-items: center;
+  background-color: #eFE5C3;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid #D7C493;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.user-badge {
+  color: #2e7d32;
+  margin-right: 8px;
+}
+
+/* 🌟 画面コンテナ（木の看板・羊皮紙風カード） */
+.gachi-card {
   background-color: #fffaf0;
   border: 3px solid #5c3a21;
-  border-radius: 12px;
-  padding: 24px 20px;
+  border-radius: 16px;
+  padding: 32px 24px; /* 💡 余白を増やしてキツキツ感を解消！ */
   box-shadow: 4px 4px 0px #5c3a21;
-  margin-bottom: 20px;
   text-align: center;
+  width: 100%;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 24px;
   color: #3e2723;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-/* 🌟 ヘッダー・タイマー */
+/* 🌟 ヘッダー・タイマー（クイズ画面用） */
 .quiz-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px dashed #D7C493; /* 古いノートのような破線 */
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed #D7C493;
 }
 
 .progress-text {
@@ -37,7 +72,7 @@ h2 {
 
 .timer-text {
   font-weight: 900;
-  color: #d84315; /* 焦燥感を煽るテラコッタ赤 */
+  color: #d84315;
   font-size: 20px;
   font-family: monospace;
 }
@@ -47,19 +82,19 @@ h2 {
   font-size: 18px;
   font-weight: bold;
   color: #3e2723;
-  line-height: 1.5;
-  margin-bottom: 24px;
+  line-height: 1.6;
+  margin-bottom: 28px;
   text-align: left;
 }
 
-/* 🌟 選択肢グリッド（エンジョイコースと同じ2列配置） */
+/* 🌟 選択肢グリッド */
 .choices-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 16px; /* ボタン同士の隙間も広げる */
 }
 
-/* 選択肢ボタン（木の札風） */
+/* 選択肢ボタン */
 .choice-btn {
   background-color: #eFE5C3;
   color: #3e2723;
@@ -85,12 +120,12 @@ h2 {
   background-color: #eFE5C3;
   border: 2px solid #5c3a21;
   border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 24px;
+  margin: 24px 0;
 }
 
 #final-score-display {
-  font-size: 40px;
+  font-size: 48px; /* スコアをもっと目立たせる */
   font-weight: 900;
   color: #d84315;
   display: inline-block;
@@ -98,21 +133,24 @@ h2 {
 }
 
 #rank-display {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
-  color: #2e7d32; /* ジャングルグリーン */
+  color: #2e7d32;
   margin-top: 10px;
 }
 
 .action-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 /* 🌟 スマホの縦画面用レスポンシブ */
 @media (max-width: 600px) {
   .choices-container {
-    grid-template-columns: 1fr; /* 押し間違いを防ぐため、スマホの縦持ちでは1列にする */
+    grid-template-columns: 1fr;
+  }
+  .gachi-card {
+    padding: 24px 16px; /* スマホでは少しだけ余白を詰める */
   }
 }
