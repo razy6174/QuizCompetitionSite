@@ -10,11 +10,10 @@
 }
 
 .course-header {
-  margin-bottom: 40px;
+  margin-bottom: 24px; /* 💡 40pxから縮小して詰める */
   text-align: center;
 }
 
-/* 🌟 ユーザー情報バッジ */
 .user-info {
   display: inline-flex;
   align-items: center;
@@ -33,7 +32,7 @@
 }
 
 .course-header h1 {
-  font-size: 24px;
+  font-size: 22px; /* 💡 24pxから微調整 */
   font-weight: 900;
   color: #3e2723;
   line-height: 1.4;
@@ -44,33 +43,32 @@
 .course-menu {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px; /* 💡 20pxから縮小し、隙間を詰める */
 }
 
 .menu-card {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 12px 16px; /* 💡 16px 20pxから縮小し、カードをスリムに */
   background-color: #fffaf0;
-  border: 3px solid #5c3a21; /* 木枠のようなこげ茶のフチ */
+  border: 3px solid #5c3a21;
   border-radius: 12px;
   text-decoration: none;
-  box-shadow: 4px 4px 0px #5c3a21; /* 物理ボタン風の影 */
+  box-shadow: 4px 4px 0px #5c3a21;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-/* タップアクション */
 .menu-card:active {
   transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px #5c3a21;
+  box-shadow: 0px 0px 0px transparent;
 }
 
 /* 🌟 アイコン画像とテキストエリア */
 .card-icon {
-  width: 80px;
-  height: 80px;
+  width: 65px;  /* 💡 80pxから縮小し、高さを抑える */
+  height: 65px; /* 💡 80pxから縮小し、高さを抑える */
   object-fit: contain;
-  margin-right: 16px;
+  margin-right: 14px;
   background-color: transparent; 
 }
 
@@ -80,19 +78,19 @@
 }
 
 .card-title {
-  font-size: 20px;
+  font-size: 18px; /* 💡 20pxから縮小 */
   font-weight: 900;
   color: #3e2723;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .card-desc {
-  font-size: 13px;
+  font-size: 12px; /* 💡 13pxから縮小 */
   font-weight: bold;
   color: #6d4c41;
 }
 
-/* 🌟 コースごとのアクセントカラー（左端の太線） */
+/* 🌟 コースごとのアクセントカラー */
 .enjoy-card {
   border-left: 12px solid #2e7d32;
 }
@@ -103,4 +101,9 @@
 
 .ranking-card {
   border-left: 12px solid #f9a825;
+}
+
+/* 🌟 新規追加：アンケートカードのアクセントカラー */
+.survey-card {
+  border-left: 12px solid #0284c7; /* 世界観を壊さない落ち着いたオーシャンブルー */
 }

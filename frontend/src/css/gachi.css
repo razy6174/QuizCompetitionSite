@@ -16,7 +16,7 @@
 
 /* 🌟 ユーザー情報ヘッダー */
 .header-area {
-  text-align: right; /* バッジを右上に配置 */
+  text-align: center; /* バッジを右上に配置 */
   margin-bottom: 16px;
   width: 100%;
 }
