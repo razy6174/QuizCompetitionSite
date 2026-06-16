@@ -1,6 +1,9 @@
 // frontend/src/pages/gachi.js
 import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer, finishQuizSession, getCurrentUserName} from '../api.js';
 
+import '../style.css';
+import '../css/gachi.css';
+
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
 // ==========================================
@@ -15,6 +18,11 @@ let startTime;     // スタート時の時間
 async function init() {
   console.log('ユーザー情報を取得しています...');
   currentUserId = await getCurrentUserId();
+
+  // 🌟 追加：ヘッダーのユーザー名を更新
+  const userName = await getCurrentUserName();
+  const headerNameEl = document.getElementById('header-user-name');
+  if (headerNameEl) headerNameEl.textContent = userName;
 
   if (currentUserId) {
     console.log('✅ ガチコース準備完了：ユーザーID', currentUserId);

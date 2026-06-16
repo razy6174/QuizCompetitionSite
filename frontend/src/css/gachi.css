@@ -1,0 +1,118 @@
+/* ==========================================
+   ガチコース専用スタイル (gachi.css)
+   ========================================== */
+
+/* 🌟 コンテナ共通（木の看板・羊皮紙風カード） */
+#start-screen, #quiz-screen, #result-screen {
+  background-color: #fffaf0;
+  border: 3px solid #5c3a21;
+  border-radius: 12px;
+  padding: 24px 20px;
+  box-shadow: 4px 4px 0px #5c3a21;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+  color: #3e2723;
+  margin-bottom: 15px;
+}
+
+/* 🌟 ヘッダー・タイマー */
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px dashed #D7C493; /* 古いノートのような破線 */
+}
+
+.progress-text {
+  font-weight: bold;
+  color: #5c3a21;
+  font-size: 16px;
+}
+
+.timer-text {
+  font-weight: 900;
+  color: #d84315; /* 焦燥感を煽るテラコッタ赤 */
+  font-size: 20px;
+  font-family: monospace;
+}
+
+/* 🌟 問題文 */
+#question-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3e2723;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+/* 🌟 選択肢グリッド（エンジョイコースと同じ2列配置） */
+.choices-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* 選択肢ボタン（木の札風） */
+.choice-btn {
+  background-color: #eFE5C3;
+  color: #3e2723;
+  padding: 16px 12px;
+  border: 2px solid #5c3a21;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px #5c3a21;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  text-align: center;
+  word-break: break-all;
+}
+
+.choice-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px transparent;
+}
+
+/* 🌟 結果画面のスコア表示 */
+.score-container {
+  background-color: #eFE5C3;
+  border: 2px solid #5c3a21;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+#final-score-display {
+  font-size: 40px;
+  font-weight: 900;
+  color: #d84315;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+#rank-display {
+  font-size: 20px;
+  font-weight: 900;
+  color: #2e7d32; /* ジャングルグリーン */
+  margin-top: 10px;
+}
+
+.action-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 🌟 スマホの縦画面用レスポンシブ */
+@media (max-width: 600px) {
+  .choices-container {
+    grid-template-columns: 1fr; /* 押し間違いを防ぐため、スマホの縦持ちでは1列にする */
+  }
+}
