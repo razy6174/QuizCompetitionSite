@@ -32,6 +32,7 @@ async function init() {
 
   if (currentUserId) {
     console.log('✅ ガチコース準備完了：ユーザーID', currentUserId);
+    checkStartTime();
     return;
   }
 
