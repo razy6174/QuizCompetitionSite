@@ -6,9 +6,9 @@ import '../css/gachi.css';
 
 // 🌟 1. 解禁日時を設定（JST: 日本時間）
 // ※ 年号は現在の環境に合わせて「2026」や「2024」に変更してください
-const TARGET_START_TIME = new Date('2026-06-29T00:00:00+09:00').getTime();
+//const TARGET_START_TIME = new Date('2026-06-29T00:00:00+09:00').getTime();
 
-// const TARGET_START_TIME = Date.now() + 5000; // ⏳ テスト用：5秒後に解禁
+const TARGET_START_TIME = Date.now() + 100000; // ⏳ テスト用：100秒後に解禁
 
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
