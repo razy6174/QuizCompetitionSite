@@ -17,7 +17,7 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
       // ==============================
 
       // 🌟 新規追加：バックエンドでのフライング完全防止
-      const startTimeTarget = new Date('2026-06-18T22:26:30+09:00').getTime();
+      const startTimeTarget = new Date('2026-06-18T22:28:30+09:00').getTime();
       if (Date.now() < startTimeTarget) {
         return new Response(JSON.stringify({ success: false, error: 'NOT_STARTED_YET' }), {
           headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
