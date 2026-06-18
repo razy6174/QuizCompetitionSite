@@ -154,3 +154,30 @@ h2 {
     padding: 24px 16px; /* スマホでは少しだけ余白を詰める */
   }
 }
+
+/* ==========================================
+   🌟 カウントダウン（解禁前）画面の専用スタイル
+   ========================================== */
+
+/* 説明テキストのベース */
+.countdown-desc {
+  font-weight: bold;
+  color: #6d4c41; /* 落ち着いた茶色 */
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* 解禁日時の強調テキスト */
+.countdown-date {
+  font-size: 24px;
+  color: #d84315; /* テラコッタ赤 */
+}
+
+/* 動く時計のテキスト */
+.countdown-timer-text {
+  font-size: 32px;
+  font-weight: 900;
+  font-family: monospace; /* 数字の幅が揃うフォント（時計がガタガタ動かないようにする小技） */
+  color: #3e2723; /* 濃いこげ茶 */
+  margin: 20px 0 30px; /* 下に少しゆとりを持たせる */
+}

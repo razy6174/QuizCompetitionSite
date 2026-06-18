@@ -4,6 +4,12 @@ import { getCurrentUserId, startQuizAndGetQuestions, submitQuizAnswer, finishQui
 import '../style.css';
 import '../css/gachi.css';
 
+// 🌟 1. 解禁日時を設定（JST: 日本時間）
+// ※ 年号は現在の環境に合わせて「2026」や「2024」に変更してください
+const TARGET_START_TIME = new Date('2026-06-29T00:00:00+09:00').getTime();
+
+// const TARGET_START_TIME = Date.now() + 5000; // ⏳ テスト用：5秒後に解禁
+
 // ==========================================
 // 📦 1. ゲームの状態（ステート）を記憶する箱たち
 // ==========================================
@@ -32,6 +38,52 @@ async function init() {
   alert('ユーザー情報がありません。ログイン画面に戻ります。');
   window.location.href = 'index.html';
 }
+
+function checkStartTime() {
+  const now = Date.now();
+  
+  if (now < TARGET_START_TIME) {
+    // ⏳ まだ始まっていない場合
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('countdown-screen').style.display = 'block';
+
+    // 1秒（1000ミリ秒）ごとに時計を更新
+    const timerInterval = setInterval(() => {
+      const timeLeft = TARGET_START_TIME - Date.now();
+      
+      // 🚀 時間になった瞬間！
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval); // 時計を止める
+        document.getElementById('countdown-screen').style.display = 'none';
+        document.getElementById('start-screen').style.display = 'block';
+        return;
+      }
+
+      // 残り時間を「日・時間・分・秒」に計算
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      // 「1日 12:05:09」のような文字列を作る（ゼロ埋め）
+      let timeString = '';
+      if (days > 0) timeString += `${days}日 `;
+      timeString += `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      
+      document.getElementById('countdown-timer').textContent = timeString;
+    }, 1000);
+
+  } else {
+    // 🟢 すでに始まっている場合（カウントダウン画面は出さずに直接スタート画面へ）
+    document.getElementById('countdown-screen').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+  }
+}
+
+// 🌟 カウントダウン画面の「戻る」ボタンの処理も追加
+document.getElementById('back-to-course-from-countdown').addEventListener('click', () => {
+  window.location.href = 'course.html';
+});
 
 // ==========================================
 // 🚀 2. スタートボタンが押された時（入り口）
