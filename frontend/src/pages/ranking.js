@@ -1,6 +1,5 @@
 // frontend/src/pages/ranking.js
 import '../css/ranking.css';
-import '../style.css';
 import { getRanking } from '../api.js';
 
 // 🌟 設定値（定数）
