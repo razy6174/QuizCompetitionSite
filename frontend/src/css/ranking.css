@@ -90,9 +90,10 @@ h2 {
   border-radius: 12px 12px 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* 💡 すべてを下寄せでひとまとめにする */
+  justify-content: flex-end;
   align-items: center;
-  padding: 16px 4px 12px; /* 上下の余白を綺麗に整える */
+  /* 💡 修正：上の余白を少し減らして、文字が上に溢れにくくする */
+  padding: 10px 4px 12px; 
   text-align: center;
   box-shadow: 4px 4px 0px #5c3a21;
 }
@@ -116,6 +117,7 @@ h2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   flex-shrink: 0; /* 💡 画面が狭くても絶対に文字を潰さない */
 }
@@ -139,7 +141,7 @@ h2 {
 
 /* 🥇🥈🥉 表彰台の高さ（上の空きスペースが広すぎないよう微調整） */
 .rank-1-box {
-  height: 155px; /* 少し低くしてバランスを取る */
+  height: 175px; /* 余裕を持たせて高くする */
   border-color: #f1c40f;
   box-shadow: 4px 4px 0px #f1c40f;
   z-index: 3;
@@ -147,7 +149,7 @@ h2 {
 .rank-1-box .podium-rank { color: #f1c40f; font-size: 20px; }
 
 .rank-2-box {
-  height: 125px;
+  height: 150px; /* 2位の文字が切れない高さ */
   border-color: #bdc3c7;
   box-shadow: 4px 4px 0px #bdc3c7;
   z-index: 2;
@@ -155,7 +157,7 @@ h2 {
 .rank-2-box .podium-rank { color: #bdc3c7; }
 
 .rank-3-box {
-  height: 110px;
+  height: 135px; /* 3位の文字が切れない最低限の高さ */
   border-color: #cd7f32;
   box-shadow: 4px 4px 0px #cd7f32;
   z-index: 1;
