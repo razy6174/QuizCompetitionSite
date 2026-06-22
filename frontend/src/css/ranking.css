@@ -1,15 +1,25 @@
-/* ==========================================
-   ランキング画面専用スタイル (ranking.css)
-   ========================================== */
+@charset "UTF-8";
 
+/* ==========================================
+   🌟 全体のベース設定（ランキング画面専用）
+   ========================================== */
 body {
-  /* 💡 コース画面の背景色に合わせて微調整してください（例: #f4f0e6, #f3efe0 など） */
-  background-color: #f4ebd0;
+  background-color: #f4ebd0; /* 羊皮紙色 */
   margin: 0;
   padding: 20px; /* 全体に少し余白を持たせる */
 }
 
-/* 🌟 ヘッダー周り */
+/* 🌟 PCの大画面で見たときの横広がり防止（全体を中央寄せ） */
+h2, 
+.pagination-wrapper, 
+.podium-area, 
+#ranking-table, 
+.back-btn-container {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 h2 {
   text-align: center;
   font-size: 24px;
@@ -18,26 +28,32 @@ h2 {
   text-shadow: 1px 1px 0px #fff;
 }
 
-/* 🌟 ページネーション（切り替えボタン） */
+/* ==========================================
+   🌟 ページネーション（切り替えボタン）
+   ========================================== */
 .pagination-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
   padding: 0 10px;
+  flex-wrap: nowrap; /* 💡 画面が狭くても絶対に折り返さない */
+  width: 100%;
 }
 
 .btn-pagination {
   background-color: #5c3a21; /* こげ茶 */
   color: #fffaf0;
   border: none;
-  padding: 10px 16px;
+  padding: 8px 12px; /* 少しスリムにして圧迫感を減らす */
   border-radius: 8px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px; /* 丸ゴシックに合わせて微調整 */
   box-shadow: 3px 3px 0px #3e2723;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
+  white-space: nowrap; /* 文字の折り返し禁止 */
+  flex-shrink: 0; /* ボタン自体が潰れるのを防ぐ */
 }
 
 .btn-pagination:active {
@@ -47,8 +63,10 @@ h2 {
 
 .page-info {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   color: #3e2723;
+  white-space: nowrap; /* 中央のテキストも折り返し禁止 */
+  flex-shrink: 0;
 }
 
 /* ==========================================
@@ -57,7 +75,7 @@ h2 {
 .podium-area {
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* 💡 下揃えにすることで階段状になる */
+  align-items: flex-end; /* 下揃えにすることで階段状になる */
   gap: 12px;
   margin-bottom: 40px;
   min-height: 180px; /* データがなくても高さを維持する */
@@ -72,26 +90,25 @@ h2 {
   border-radius: 12px 12px 0 0; /* 上の角だけ丸くする */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between; /* 💡 縦方向の隙間を均等にして窮屈さをなくす */
   align-items: center;
-  padding: 12px 6px;
+  padding: 8px 4px; /* 上下の余白を少し確保 */
   text-align: center;
   box-shadow: 4px 4px 0px #5c3a21;
 }
 
-/* データがない時も文字が真ん中に来るようにする */
 .podium-name {
-  font-size: 12px;
+  font-size: 11px; /* 横に広い丸ゴシックに合わせて縮小 */
   font-weight: bold;
   color: #3e2723;
-  margin: auto 0 5px; /* 上下中央寄せの小技 */
+  margin: 2px 0;
   width: 100%;
-  line-height: 1.3; /* 2行になった時に行間が開きすぎないように詰める */
-  white-space: normal; /* 長い名前は複数行にする */
-  word-break: break-all; /* 文字の途中でも強制的に折り返す */
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-all;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 最大2行まで表示（12文字ならこれで確実に収まります） */
+  -webkit-line-clamp: 2; /* 最大2行まで表示 */
   overflow: hidden;
 }
 
@@ -99,6 +116,15 @@ h2 {
   font-size: 18px;
   font-weight: 900;
   color: #d84315; /* テラコッタ色 */
+  margin: 4px 0 2px;
+}
+
+.podium-time {
+  font-size: 10px;
+  font-weight: bold;
+  color: #6d4c41;
+  white-space: nowrap; /* 💡 「秒」が落ちるのを防ぐ */
+  margin-bottom: 2px;
 }
 
 .podium-rank {
@@ -107,16 +133,15 @@ h2 {
   margin-bottom: 8px;
 }
 
-/* 🥇 1位専用スタイル（一番高く、金色の装飾） */
+/* 🥇 1位・🥈 2位・🥉 3位 専用スタイル */
 .rank-1-box {
   height: 160px;
   border-color: #f1c40f;
   box-shadow: 4px 4px 0px #f1c40f;
-  z-index: 3; /* 一番手前に出す */
+  z-index: 3;
 }
 .rank-1-box .podium-rank { color: #f1c40f; font-size: 20px; }
 
-/* 🥈 2位専用スタイル（銀色の装飾） */
 .rank-2-box {
   height: 120px;
   border-color: #bdc3c7;
@@ -125,7 +150,6 @@ h2 {
 }
 .rank-2-box .podium-rank { color: #bdc3c7; }
 
-/* 🥉 3位専用スタイル（銅色の装飾） */
 .rank-3-box {
   height: 100px;
   border-color: #cd7f32;
@@ -140,20 +164,19 @@ h2 {
 #ranking-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 10px; /* 💡 行と行の間に隙間を空けてカード風にする */
+  border-spacing: 0 10px; /* 行と行の間に隙間を空けてカード風にする */
   table-layout: fixed;
 }
 
 #ranking-table th {
   padding: 0 5px 10px;
   color: #6d4c41;
-  font-size: 13px; /* 小さな画面でも入るように微調整 */
+  font-size: 13px;
   border-bottom: 2px solid #D7C493;
-  white-space: nowrap; /* 💡 ヘッダーも絶対に改行させない */
-  text-align: center; /* ヘッダーを中央揃えに統一 */
+  white-space: nowrap;
+  text-align: center;
 }
 
-/* 各行をカードのように見せる */
 #ranking-table td {
   padding: 12px 5px;
   background-color: #fffaf0;
@@ -161,7 +184,7 @@ h2 {
   border-bottom: 3px solid #5c3a21;
   font-size: 13px;
   font-weight: bold;
-  vertical-align: middle; /* 縦方向の中央揃え */
+  vertical-align: middle;
 }
 
 #ranking-table td:first-child {
@@ -176,37 +199,11 @@ h2 {
   color: #666;
 }
 
-/* 1列目：順位 */
-#ranking-table th:nth-child(1),
-#ranking-table td:nth-child(1) {
-  width: 15%;
-  white-space: nowrap; /* 改行禁止 */
-  text-align: center;
-}
-
-/* 2列目：プレイヤー（ここだけは長い名前のために改行を許す） */
-#ranking-table th:nth-child(2),
-#ranking-table td:nth-child(2) {
-  width: 45%; 
-  text-align: left;
-  word-break: break-all; /* 長すぎる場合は強制的に折り返す */
-}
-
-/* 3列目：スコア */
-#ranking-table th:nth-child(3),
-#ranking-table td:nth-child(3) {
-  width: 15%;
-  white-space: nowrap; /* 改行禁止 */
-  text-align: center;
-}
-
-/* 4列目：タイム */
-#ranking-table th:nth-child(4),
-#ranking-table td:nth-child(4) {
-  width: 25%;
-  white-space: nowrap; /* 💡 これで「秒」が下に落ちるのを完全に防ぐ！ */
-  text-align: center;
-}
+/* 各列の幅・改行設定 */
+#ranking-table th:nth-child(1), #ranking-table td:nth-child(1) { width: 15%; white-space: nowrap; text-align: center; }
+#ranking-table th:nth-child(2), #ranking-table td:nth-child(2) { width: 45%; text-align: left; word-break: break-all; }
+#ranking-table th:nth-child(3), #ranking-table td:nth-child(3) { width: 15%; white-space: nowrap; text-align: center; }
+#ranking-table th:nth-child(4), #ranking-table td:nth-child(4) { width: 25%; white-space: nowrap; text-align: center; }
 
 .score-text {
   color: #d84315 !important;
@@ -214,45 +211,32 @@ h2 {
   font-weight: 900 !important;
 }
 
-/* 🌟 表彰台のタイムのスタイル */
-.podium-time {
-  font-size: 12px;
-  font-weight: bold;
-  color: #6d4c41; /* 少し落ち着いた茶色 */
-  margin-top: 4px;
-}
-
-/* 🌟 戻るボタンのコンテナ周り */
-.back-btn-container {
-  margin-top: 30px;
-  padding-bottom: 40px; /* 画面の一番下に少し余裕を持たせる */
-  text-align: center;
-}
-
+/* ==========================================
+   🌟 戻るボタンのコンテナ周り
+   ========================================== */
 .back-btn-container {
   margin-top: 40px;
   padding-bottom: 40px;
   display: flex;
-  justify-content: center; /* ボタンを画面の中央に配置 */
+  justify-content: center;
 }
 
 #back-to-course-btn {
-  background-color: #eFE5C3; /* 他のカードに合わせた明るい木の色 */
-  color: #5c3a21; /* こげ茶色の文字 */
-  border: 3px solid #5c3a21; /* こげ茶色の太いフチ */
-  border-radius: 12px; /* 角を丸くする */
-  padding: 16px 32px; /* スマホでタップしやすいように大きく */
+  background-color: #eFE5C3;
+  color: #5c3a21;
+  border: 3px solid #5c3a21;
+  border-radius: 12px;
+  padding: 16px 32px;
   font-size: 16px;
   font-weight: bold;
-  box-shadow: 4px 4px 0px #5c3a21; /* 🌟 コース選択と同じカチッとした影 */
+  box-shadow: 4px 4px 0px #5c3a21;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
-  width: 80%; /* 画面幅に対して少し余裕を持たせる */
-  max-width: 300px; /* PCで見ても広がりすぎないように */
-  font-family: inherit;
+  width: 80%;
+  max-width: 300px;
+  font-family: inherit; /* bodyの丸ゴシックを引き継ぐ */
 }
 
-/* 🌟 ボタンを押した時の「沈み込み」アニメーション */
 #back-to-course-btn:active {
   transform: translate(4px, 4px);
   box-shadow: 0px 0px 0px transparent;
