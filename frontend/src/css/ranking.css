@@ -81,10 +81,6 @@ h2 {
   min-height: 180px; /* データがなくても高さを維持する */
 }
 
-/* ==========================================
-   🌟 表彰台エリア（1位〜3位）の修正
-   ========================================== */
-
 /* 表彰台の共通ブロック */
 .podium-box {
   width: 30%;
@@ -104,10 +100,42 @@ h2 {
 .podium-rank {
   font-size: 16px;
   font-weight: 900;
-  margin-bottom: 6px; /* 💡 ここにあった「auto」を削除し、通常の隙間に戻す！ */
+  margin-bottom: 6px; 
 }
 
-/* （名前・スコア・タイムの指定は今のままで完璧です！） */
+/* 🌟 ここが抜けていた名前・スコア・タイムの設定です！ */
+.podium-name {
+  font-size: 11px;
+  font-weight: bold;
+  color: #3e2723;
+  margin: 6px 0 4px;
+  width: 100%;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  flex-shrink: 0; /* 💡 画面が狭くても絶対に文字を潰さない */
+}
+
+.podium-score {
+  font-size: 18px;
+  font-weight: 900;
+  color: #d84315;
+  margin: 2px 0;
+  flex-shrink: 0;
+}
+
+.podium-time {
+  font-size: 10px;
+  font-weight: bold;
+  color: #6d4c41;
+  white-space: nowrap; /* 💡 「秒」が落ちるのを防ぐ */
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
 
 /* 🥇🥈🥉 表彰台の高さ（上の空きスペースが広すぎないよう微調整） */
 .rank-1-box {
@@ -133,6 +161,7 @@ h2 {
   z-index: 1;
 }
 .rank-3-box .podium-rank { color: #cd7f32; }
+
 
 /* ==========================================
    🌟 通常リストエリア（4位以降、または51位以降）
