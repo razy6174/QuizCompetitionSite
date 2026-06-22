@@ -81,61 +81,71 @@ h2 {
   min-height: 180px; /* データがなくても高さを維持する */
 }
 
-/* 表彰台の共通ブロック（木の台座風） */
+/* ==========================================
+   🌟 表彰台エリア（1位〜3位）の修正
+   ========================================== */
+
+/* 表彰台の共通ブロック */
 .podium-box {
   width: 30%;
   max-width: 110px;
   background-color: #fffaf0;
   border: 3px solid #5c3a21;
-  border-radius: 12px 12px 0 0; /* 上の角だけ丸くする */
+  border-radius: 12px 12px 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 💡 縦方向の隙間を均等にして窮屈さをなくす */
+  /* 💡 均等割付をやめて、中身をすべて「下寄せ」にする */
+  justify-content: flex-end; 
   align-items: center;
-  padding: 8px 4px; /* 上下の余白を少し確保 */
+  padding: 12px 4px;
   text-align: center;
   box-shadow: 4px 4px 0px #5c3a21;
 }
 
+.podium-rank {
+  font-size: 16px;
+  font-weight: 900;
+  /* 💡 追加：これを入れると、順位の王冠だけが一番上に押し上げられる！ */
+  margin-bottom: auto; 
+}
+
 .podium-name {
-  font-size: 11px; /* 横に広い丸ゴシックに合わせて縮小 */
+  font-size: 11px;
   font-weight: bold;
   color: #3e2723;
-  margin: 2px 0;
   width: 100%;
   line-height: 1.2;
+  margin: 6px 0 4px; /* 余白を調整 */
   white-space: normal;
   word-break: break-all;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 最大2行まで表示 */
+  -webkit-line-clamp: 2;
   overflow: hidden;
+  /* 💡 追加：画面が狭くても絶対に文字を潰さない（消滅防止） */
+  flex-shrink: 0; 
 }
 
 .podium-score {
   font-size: 18px;
   font-weight: 900;
-  color: #d84315; /* テラコッタ色 */
-  margin: 4px 0 2px;
+  color: #d84315;
+  margin: 2px 0;
+  flex-shrink: 0; /* 💡 追加 */
 }
 
 .podium-time {
   font-size: 10px;
   font-weight: bold;
   color: #6d4c41;
-  white-space: nowrap; /* 💡 「秒」が落ちるのを防ぐ */
+  white-space: nowrap;
   margin-bottom: 2px;
+  flex-shrink: 0; /* 💡 追加 */
 }
 
-.podium-rank {
-  font-size: 16px;
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-
-/* 🥇 1位・🥈 2位・🥉 3位 専用スタイル */
+/* 🥇🥈🥉 表彰台の高さ：文字が潰れないように少しだけ高くする */
 .rank-1-box {
-  height: 160px;
+  height: 170px; /* +10px */
   border-color: #f1c40f;
   box-shadow: 4px 4px 0px #f1c40f;
   z-index: 3;
@@ -143,7 +153,7 @@ h2 {
 .rank-1-box .podium-rank { color: #f1c40f; font-size: 20px; }
 
 .rank-2-box {
-  height: 120px;
+  height: 135px; /* +15px */
   border-color: #bdc3c7;
   box-shadow: 4px 4px 0px #bdc3c7;
   z-index: 2;
@@ -151,7 +161,7 @@ h2 {
 .rank-2-box .podium-rank { color: #bdc3c7; }
 
 .rank-3-box {
-  height: 100px;
+  height: 115px; /* +15px */
   border-color: #cd7f32;
   box-shadow: 4px 4px 0px #cd7f32;
   z-index: 1;
