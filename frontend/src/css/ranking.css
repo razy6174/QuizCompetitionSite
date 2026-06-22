@@ -101,7 +101,7 @@ h2 {
 .podium-rank {
   font-size: 16px;
   font-weight: 900;
-  margin-bottom: 6px; 
+  margin-bottom: 4px; 
 }
 
 /* 🌟 ここが抜けていた名前・スコア・タイムの設定です！ */
@@ -146,7 +146,11 @@ h2 {
   box-shadow: 4px 4px 0px #f1c40f;
   z-index: 3;
 }
-.rank-1-box .podium-rank { color: #f1c40f; font-size: 20px; }
+.rank-1-box .podium-rank { 
+  color: #f1c40f; 
+  font-size: 20px; 
+  margin-bottom: 32px; /* 💡 ここで1位だけを美しい位置までグッと持ち上げる！ */
+}
 
 .rank-2-box {
   height: 150px; /* 2位の文字が切れない高さ */
@@ -154,7 +158,10 @@ h2 {
   box-shadow: 4px 4px 0px #bdc3c7;
   z-index: 2;
 }
-.rank-2-box .podium-rank { color: #bdc3c7; }
+.rank-2-box .podium-rank { 
+  color: #bdc3c7; 
+  margin-bottom: 16px; /* 💡 2位もバランスを見て少し上に上げる */
+}
 
 .rank-3-box {
   height: 135px; /* 3位の文字が切れない最低限の高さ */
@@ -162,7 +169,9 @@ h2 {
   box-shadow: 4px 4px 0px #cd7f32;
   z-index: 1;
 }
-.rank-3-box .podium-rank { color: #cd7f32; }
+.rank-3-box .podium-rank { 
+  color: #cd7f32; 
+}
 
 
 /* ==========================================
