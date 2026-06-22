@@ -1,3 +1,8 @@
+@charset "UTF-8";
+
+/* 🌟 追加：探検・ゲームの世界観に合う丸ゴシックフォントを読み込む */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap');
+
 /* ==========================================
    🌟 1. ベース設定（アプリ全体のリセットと基本色）
    ========================================== */
@@ -9,10 +14,12 @@
 }
 
 body {
-  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-  /* 🌟 アプリ全体の背景色を「羊皮紙色」に統一 */
+  /* 🌟 変更：ゲーム風の丸ゴシックを最優先で適用する */
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'ヒラギノ丸ゴ ProN', 'Hiragino Kaku Gothic ProN', sans-serif;
+  
+  /* 🌟 アプリ全体の背景色を「羊皮紙色」に統一（そのまま！） */
   background-color: #f4ebd0; 
-  color: #3e2723; /* 基本の文字色を「深いこげ茶色」に */
+  color: #3e2723; /* 基本の文字色を「深いこげ茶色」に（そのまま！） */
 }
 
 /* 共通の画面コンテナ（各ページのベースとなる余白） */

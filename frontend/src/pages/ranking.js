@@ -1,4 +1,5 @@
 // frontend/src/pages/ranking.js
+import '../style.css';
 import '../css/ranking.css';
 import { getRanking } from '../api.js';
 
