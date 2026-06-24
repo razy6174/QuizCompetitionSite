@@ -49,8 +49,9 @@ export async function handleStartQuizAndGetQuestions(request, env, course) {
       newSessionId = sessionResults[0].id;
 
       // ② ガチの問題（course_type = 'gachi'）をランダムに15問持ってくる！
+      // 🔒 【セキュリティ修正】correct_choice を除外して返す
       const { results: qResults } = await env.DB.prepare(
-        'SELECT * FROM questions WHERE course_type = ? ORDER BY RANDOM() LIMIT 15'
+      'SELECT id, course_type, question_text, image_url, choice_a, choice_b, choice_c, choice_d FROM questions WHERE course_type = ? ORDER BY RANDOM() LIMIT 15'
       ).bind('gachi').all();
       quizResults = qResults;
 
