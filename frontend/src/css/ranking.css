@@ -79,12 +79,15 @@ h2 {
   gap: 12px;
   margin-bottom: 40px;
   min-height: 180px; /* データがなくても高さを維持する */
+  flex-wrap: wrap;
 }
 
 /* 表彰台の共通ブロック */
 .podium-box {
-  width: 30%;
-  max-width: 110px;
+  flex: 1 1 calc(33.333% - 14px);
+  min-width: 100px;
+  max-width: calc(33.333% - 14px);
+  min-height: 120px;
   background-color: #fffaf0;
   border: 3px solid #5c3a21;
   border-radius: 12px 12px 0 0;
@@ -123,11 +126,27 @@ h2 {
 }
 
 .podium-score {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
   color: #d84315;
   margin: 2px 0;
   flex-shrink: 0;
+  color: #d84315; /* テラコッタ色 */
+  margin: 6px 0 0;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podium-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6d4c41; /* 少し落ち着いた茶色 */
+  margin-top: 4px;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .podium-time {
@@ -256,4 +275,108 @@ h2 {
 #back-to-course-btn:active {
   transform: translate(4px, 4px);
   box-shadow: 0px 0px 0px transparent;
+}
+
+
+/* ==========================================
+   💻 PC・タブレット向けレスポンシブ対応
+   ========================================== */
+@media screen and (min-width: 768px) {
+  
+  body {
+    /* 💡 PC画面で横に広がりすぎないよう最大幅を設定し、中央寄せにする */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px; 
+  }
+
+  /* 🌟 ヘッダー周り */
+  h2 {
+    font-size: 32px; /* タイトルを少し大きく */
+    margin-bottom: 30px;
+  }
+
+  /* 🌟 ページネーション */
+  .btn-pagination {
+    font-size: 16px;
+    padding: 12px 24px; /* クリックしやすく余白を増やす */
+  }
+
+  .page-info {
+    font-size: 20px;
+  }
+
+  /* 🌟 表彰台エリア（PC向けに全体的にスケールアップ） */
+  .podium-area {
+    gap: 24px; /* 台座同士の隙間を広げる */
+    margin-bottom: 60px;
+    min-height: 240px;
+  }
+
+  .podium-box {
+    flex: 1 1 160px;
+    min-width: 140px;
+    max-width: 180px; /* 台座の幅を広げる */
+    padding: 18px 10px;
+    min-height: 220px;
+    justify-content: space-between;
+  }
+
+  .podium-name {
+    font-size: 16px;
+  }
+
+  .podium-score {
+    font-size: 20px;
+  }
+
+  .podium-rank {
+    font-size: 20px;
+  }
+
+  /* 表彰台の高さもPCに合わせて高くする */
+  .rank-1-box {
+    min-height: 240px;
+    height: auto;
+  }
+  .rank-1-box .podium-rank { font-size: 26px; }
+  .rank-2-box {
+    min-height: 200px;
+    height: auto;
+  }
+  .rank-3-box {
+    min-height: 170px;
+    height: auto;
+  }
+  .podium-time {
+    font-size: 13px;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  /* 🌟 通常リストエリア */
+  #ranking-table {
+    border-spacing: 0 14px; /* 行の隙間を少し広げる */
+  }
+
+  #ranking-table th {
+    font-size: 16px;
+    padding: 0 10px 14px;
+  }
+
+  #ranking-table td {
+    font-size: 16px;
+    padding: 16px 10px; /* PCではカードの上下余白を広げてリッチに見せる */
+  }
+
+  .score-text {
+    font-size: 20px !important;
+  }
+
+  /* 🌟 戻るボタン */
+  #back-to-course-btn {
+    font-size: 20px;
+    padding: 20px 40px;
+    max-width: 400px; /* PC画面でも存在感が出るように少し大きく */
+  }
 }
