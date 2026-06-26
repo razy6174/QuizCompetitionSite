@@ -140,7 +140,7 @@ const POLLING_INTERVAL = 7000; // 7秒間隔
 
 function setupAutoUpdate() {
   const urlParams = new URLSearchParams(window.location.search);
-  const isVenueMode = urlParams.get('venue') === 'true';
+  const isVenueMode = urlParams.has('venue');
 
   if (isVenueMode) {
     console.log('📺 会場サイネージモード起動：7秒ごとに自動更新します！');
