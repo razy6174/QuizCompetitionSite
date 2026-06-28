@@ -1,3 +1,5 @@
+DELETE FROM questions;
+DELETE FROM sqlite_sequence WHERE name = 'questions';
 -- questionsテーブルにガチコース用の15問のダミーデータを一括で挿入する
 INSERT INTO questions (course_type, question_text, image_url, choice_a, choice_b, choice_c, choice_d, correct_choice) VALUES
 ('gachi', 'カブトムシのツノは何のためにあるのでしょうか?', NULL, '木に穴をあけるため', 'ライバルと戦うため', 'おしゃれをするため', '空を飛ぶバランスをとるため', 'B'),
