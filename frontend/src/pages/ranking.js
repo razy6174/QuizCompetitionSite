@@ -140,16 +140,24 @@ const POLLING_INTERVAL = 7000; // 7秒間隔
 
 function setupAutoUpdate() {
   const urlParams = new URLSearchParams(window.location.search);
-  const isVenueMode = urlParams.has('venue');
+  const isVenueMode = urlParams.has('venue'); // 💡 ?venue があるかチェック
 
   if (isVenueMode) {
     console.log('📺 会場サイネージモード起動：7秒ごとに自動更新します！');
     
+    // 🌟 追加：サイネージモードの時は「コースに戻る」ボタンを完全に隠す！
+    const backBtnContainer = document.querySelector('.back-btn-container');
+    if (backBtnContainer) {
+      backBtnContainer.style.display = 'none';
+    }
+
+    // 7秒ごとに自動更新
     setInterval(async () => {
       console.log('🔄 最新ランキングデータを取得中...');
-      // 💡 現在のページ（currentOffset）を維持したまま裏側で更新する
+      // 現在のページ（currentOffset）を維持したまま裏側で更新する
       await loadRanking(currentOffset); 
     }, POLLING_INTERVAL);
+    
   } else {
     console.log('📱 通常モード：自動更新は行いません');
   }
