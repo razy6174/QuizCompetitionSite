@@ -33,7 +33,7 @@ function showEmailLoginForm(container, message = '') {
       <h2 style="margin-bottom: 10px; font-size: 24px;">ログイン</h2>
       <p style="margin-bottom: 20px; font-size: 14px; color: #666;">大学のメールアドレスでログインしてください。</p>
       ${message ? `<p style="margin-bottom: 20px; color: #c0392b;">${message}</p>` : ''}
-      <input type="email" id="emailInput" placeholder="example@school.ac.jp" style="width: 100%; max-width: 320px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
+      <input type="email" id="emailInput" placeholder="c学籍番号@st.kanazawa-it.ac.jp" style="width: 100%; max-width: 320px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
       <button id="submitEmailBtn" style="width: 100%; max-width: 320px; padding: 15px; font-size: 16px; font-weight: bold; background-color: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
         メールアドレスでログイン
       </button>
