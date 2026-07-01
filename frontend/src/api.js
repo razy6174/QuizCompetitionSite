@@ -1,4 +1,5 @@
 const USER_CACHE_KEY = 'quizUserInfo';
+const GUEST_ID_KEY = 'guestId';
 
 export const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8787'
@@ -13,6 +14,23 @@ function setCachedUserInfo(data) {
   sessionStorage.setItem(USER_CACHE_KEY, JSON.stringify(data));
 }
 
+function generateGuestId() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+  const randomString = Math.random().toString(36).slice(2, 10);
+  return `guest_${timestamp}_${randomString}`;
+}
+
+function getGuestId() {
+  let guestId = localStorage.getItem(GUEST_ID_KEY);
+  if (!guestId) {
+    guestId = generateGuestId();
+    localStorage.setItem(GUEST_ID_KEY, guestId);
+  }
+  return guestId;
+}
+
 export async function loginAndGetUserInfo() {
   try {
     const cached = getCachedUserInfo();
@@ -20,17 +38,8 @@ export async function loginAndGetUserInfo() {
       return cached;
     }
 
-    let emailQuery = '';
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      const identityRes = await fetch('/cdn-cgi/access/get-identity');
-      if (!identityRes.ok) {
-        return { success: false, error: 'Not authenticated' };
-      }
-      const identity = await identityRes.json();
-      emailQuery = `?email=${identity.email}`;
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/auth${emailQuery}`);
+    const guestId = getGuestId();
+    const response = await fetch(`${API_BASE_URL}/api/auth?email=${encodeURIComponent(guestId)}`);
     if (!response.ok) throw new Error('Network response was not ok');
 
     const data = await response.json();

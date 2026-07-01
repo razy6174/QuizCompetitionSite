@@ -2,13 +2,10 @@
 
 export async function handleUserAuth(request, env) {
   const url = new URL(request.url);
-  const Email = url.searchParams.get('email');
+  const guestId = url.searchParams.get('email') || request.headers.get('x-guest-id');
 
-  // ローカル開発用のフォールバック（手元でテストする用）
-  const userEmail = Email || 'test@example.com'; 
-
-  if (!userEmail) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  if (!guestId) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
   }
 
   try {
@@ -16,7 +13,7 @@ export async function handleUserAuth(request, env) {
     // ※ env.DB の部分は、wrangler.jsonc で設定したD1のバインディング名に合わせてください
     const { results } = await env.DB.prepare(
       'SELECT * FROM users WHERE email = ?'
-    ).bind(userEmail).all();
+    ).bind(guestId).all();
 
     let user = results[0];
 
@@ -30,12 +27,12 @@ export async function handleUserAuth(request, env) {
 
       const newUser = await env.DB.prepare(
         'INSERT INTO users (email, created_at) VALUES (?, ?) RETURNING *'
-      ).bind(userEmail, serverCreatedAt).first();
+      ).bind(guestId, serverCreatedAt).first();
       
       user = newUser;
-      console.log('新規ユーザーを登録しました:', userEmail);
+      console.log('新規ユーザーを登録しました:', guestId);
     } else {
-      console.log('既存ユーザーがログインしました:', userEmail);
+      console.log('既存ユーザーがログインしました:', guestId);
     }
 
 // 🌟 追加：名前が未登録（nullや空文字）かどうかを判定
