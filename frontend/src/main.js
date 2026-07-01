@@ -27,6 +27,35 @@ async function initializeApp() {
   }, 500);
 }
 
+function showEmailLoginForm(container, message = '') {
+  container.innerHTML = `
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center;">
+      <h2 style="margin-bottom: 10px; font-size: 24px;">ログイン</h2>
+      <p style="margin-bottom: 20px; font-size: 14px; color: #666;">大学のメールアドレスでログインしてください。</p>
+      ${message ? `<p style="margin-bottom: 20px; color: #c0392b;">${message}</p>` : ''}
+      <input type="email" id="emailInput" placeholder="example@school.ac.jp" style="width: 100%; max-width: 320px; padding: 15px; font-size: 16px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; outline: none;">
+      <button id="submitEmailBtn" style="width: 100%; max-width: 320px; padding: 15px; font-size: 16px; font-weight: bold; background-color: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        メールアドレスでログイン
+      </button>
+    </div>
+  `;
+
+  document.getElementById('submitEmailBtn').addEventListener('click', async () => {
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email) {
+      alert('メールアドレスを入力してください。');
+      return;
+    }
+
+    const btn = document.getElementById('submitEmailBtn');
+    btn.disabled = true;
+    btn.textContent = '送信中...';
+
+    const authResult = await loginAndGetUserInfo(email);
+    handleAuthResult(authResult, container);
+  });
+}
+
 function handleAuthResult(result, container) {
   if (result && result.success) {
     if (result.requiresName) {
@@ -42,7 +71,6 @@ function handleAuthResult(result, container) {
         </div>
       `;
 
-      // 登録ボタンのイベント（以前のロジックと同じ）
       document.getElementById('submitNameBtn').addEventListener('click', async () => {
         const nameInput = document.getElementById('playerNameInput').value.trim();
         if (!nameInput) {
@@ -67,12 +95,14 @@ function handleAuthResult(result, container) {
       // 🌟 登録済みの場合：そのままコース選択画面へ直行！
       window.location.href = 'course.html';
     }
+  } else if (result && (result.needsEmail || result.invalidEmail)) {
+    showEmailLoginForm(container, result.error || '大学メールアドレスを正しく入力してください。');
   } else {
     // 認証エラー時
     container.innerHTML = `
       <div style="text-align: center; padding: 40px 20px;">
         <h2>認証エラー</h2>
-        <p>ログインに失敗しました。<br>ページをリロードしてください。</p>
+        <p>ログインに失敗しました。<br>ページをリロードして、再度メールアドレスを入力してください。</p>
       </div>
     `;
   }

@@ -1,5 +1,5 @@
 const USER_CACHE_KEY = 'quizUserInfo';
-const GUEST_ID_KEY = 'guestId';
+const USER_EMAIL_KEY = 'userEmail';
 
 export const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8787'
@@ -14,36 +14,54 @@ function setCachedUserInfo(data) {
   sessionStorage.setItem(USER_CACHE_KEY, JSON.stringify(data));
 }
 
-function generateGuestId() {
-  const now = new Date();
-  const pad = (value) => String(value).padStart(2, '0');
-  const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-  const randomString = Math.random().toString(36).slice(2, 10);
-  return `guest_${timestamp}_${randomString}`;
+function getStoredEmail() {
+  return localStorage.getItem(USER_EMAIL_KEY);
 }
 
-function getGuestId() {
-  let guestId = localStorage.getItem(GUEST_ID_KEY);
-  if (!guestId) {
-    guestId = generateGuestId();
-    localStorage.setItem(GUEST_ID_KEY, guestId);
-  }
-  return guestId;
+function storeEmail(email) {
+  localStorage.setItem(USER_EMAIL_KEY, email);
 }
 
-export async function loginAndGetUserInfo() {
+function clearStoredEmail() {
+  localStorage.removeItem(USER_EMAIL_KEY);
+}
+
+function validateEmail(email) {
+  const normalized = email.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(normalized);
+}
+
+export async function loginAndGetUserInfo(providedEmail = null) {
   try {
     const cached = getCachedUserInfo();
     if (cached) {
       return cached;
     }
 
-    const guestId = getGuestId();
-    const response = await fetch(`${API_BASE_URL}/api/auth?email=${encodeURIComponent(guestId)}`);
-    if (!response.ok) throw new Error('Network response was not ok');
+    let email = providedEmail || getStoredEmail();
+    if (!email) {
+      return { success: false, needsEmail: true };
+    }
+
+    email = email.trim().toLowerCase();
+    if (!validateEmail(email)) {
+      clearStoredEmail();
+      return { success: false, invalidEmail: true, error: 'メールアドレスの形式が正しくありません。' };
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/auth?email=${encodeURIComponent(email)}`);
+    if (!response.ok) {
+      if (response.status === 401) {
+        clearStoredEmail();
+        return { success: false, needsEmail: true, error: 'メールアドレスの入力が必要です。' };
+      }
+      throw new Error('Network response was not ok');
+    }
 
     const data = await response.json();
     if (data.success) {
+      storeEmail(email);
       setCachedUserInfo(data);
     }
     return data;

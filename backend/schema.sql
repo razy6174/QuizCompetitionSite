@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS users;
 -- ② users（参加者）テーブルの作成
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT, -- 自動で割り振られる参加者番号
-    email TEXT UNIQUE NOT NULL,           -- Microsoftのメールアドレス（重複禁止）
+    email TEXT UNIQUE NOT NULL,           -- 大学のメールアドレス（学籍番号を含むメールアドレス、重複禁止）
     name TEXT,                            -- ユーザー名
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP -- 初めてログインした日時
 );
